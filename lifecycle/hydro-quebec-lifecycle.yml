@@ -1,0 +1,100 @@
+generated: '2026-07-27'
+method: searched
+source: >-
+  live response headers from https://donnees.hydroquebec.com/api/explore/v2.0 and v2.1
+  (2026-07-27), the Opendatasoft Explore API v2.1 reference, and status.huwise.com
+note: >-
+  The Explore API's lifecycle is governed by Opendatasoft, the platform that implements and serves
+  it, not by Hydro-Québec. Hydro-Québec publishes no API-specific versioning, deprecation or SLA
+  policy of its own — what it controls is the dataset catalog, which it revises independently.
+versioning:
+  scheme: uri-path
+  current: v2.1
+  pattern: https://donnees.hydroquebec.com/api/explore/{version}
+  versions:
+  - version: v2.1
+    status: current
+    stability: stable
+    base_url: https://donnees.hydroquebec.com/api/explore/v2.1
+    spec: openapi/hydro-quebec-open-data-explore-api-v2-1-openapi.json
+    note: >-
+      Platform docs state "The v2.1 version is stable and production ready: no breaking change
+      will be introduced in the future, following our versioning policy."
+  - version: v2.0
+    status: deprecated
+    base_url: https://donnees.hydroquebec.com/api/explore/v2.0
+    spec: openapi/hydro-quebec-open-data-explore-api-v2-0-openapi.json
+    still_serving: true
+    verified: '2026-07-27'
+  - version: v1
+    status: legacy
+    base_url: https://donnees.hydroquebec.com/api/datasets/1.0
+    spec: null
+    still_serving: true
+    verified: '2026-07-27'
+    note: >-
+      Opendatasoft Search API v1. Live and anonymous (HTTP 200, 26 datasets), documented only
+      through the interactive console at /api/v1/console. No OpenAPI or Swagger description is
+      published — /api/v1/swagger.json returns HTTP 404.
+  docs: https://help.opendatasoft.com/apis/ods-explore-v2/explore_v2.1.html
+deprecation:
+  policy_url: https://help.opendatasoft.com/apis/ods-explore-v2/explore_v2.1.html#section/Introduction/v2.1-Changelog
+  signalled: true
+  sunset_header: false
+  rfc8594: false
+  mechanism: proprietary response header + RFC 8288 Link relation
+  headers:
+  - name: ODS-Explore-API-Deprecation
+    observed_value: 'deprecated API version (v2.0), please use the current v2.1 version'
+    observed_on: https://donnees.hydroquebec.com/api/explore/v2.0/catalog/datasets
+    verified: '2026-07-27'
+  - name: Link
+    observed_value: '<https://help.huwise.com/apis/ods-explore-v2/explore_v2.1.html#section/Introduction/v2.1-Changelog>; rel="deprecation"; type="text/html"'
+    verified: '2026-07-27'
+  cors_exposed: true
+  cors_note: >-
+    Access-Control-Expose-Headers lists ODS-Explore-API-Deprecation and Link, so browser clients
+    can read the deprecation signal cross-origin.
+  sunset_date: null
+  sunset_note: >-
+    No retirement date announced. v2.0 is marked deprecated but continues to serve HTTP 200 with
+    the full 16-operation surface.
+  deprecated_versions: [v2.0]
+  removed_endpoints:
+  - path: /catalog/datasets/{dataset_id}/aggregates
+    removed_in: v2.1
+    replacement: /catalog/datasets/{dataset_id}/records
+  - path: /catalog/datasets/{dataset_id}/query
+    removed_in: v2.1
+    replacement: /catalog/datasets/{dataset_id}/records
+deprecated_operations: []
+deprecated_operations_note: >-
+  No operation in either harvested spec carries deprecated: true. Deprecation is expressed at the
+  version level, not the operation level.
+sla:
+  url: null
+  uptime_target: null
+  note: >-
+    No SLA is published for the Hydro-Québec open data API. The data is offered under CC BY-NC 4.0
+    with no warranty — the licence page states "No warranties are given."
+status_page:
+  url: https://status.huwise.com/
+  scope: platform
+  verified: '2026-07-27'
+  note: >-
+    Status page for the Opendatasoft (Huwise) platform that hosts donnees.hydroquebec.com. There
+    is no Hydro-Québec-operated status page for the API — status.hydroquebec.com does not resolve.
+    infopannes.solutions.hydroquebec.com is a customer power-outage map, not an API status page.
+data_lifecycle:
+  catalog_size: 26
+  verified: '2026-07-27'
+  note: >-
+    Dataset-level lifecycle is Hydro-Québec's. Each dataset carries its own metas.default.modified
+    timestamp, readable through getDatasets/getDataset, and the DCAT export at
+    /catalog/exports/dcat is the machine-readable inventory. Datasets are added, revised and
+    retired without an API version change.
+  duplicate_datasets_observed:
+  - [facteurges, facteurs-directs-ges]
+  - [calendrier-travaux-degagement-transport-json, calendrier-travaux-degagement-transport-shap]
+  - [calendrier-travaux-degagement-distribution-json, calendrier-travaux-degagement-distribution-shap]
+changelog: changelog/hydro-quebec-changelog.yml

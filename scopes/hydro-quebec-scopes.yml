@@ -1,0 +1,60 @@
+generated: '2026-07-27'
+method: searched
+source: https://help.opendatasoft.com/apis/ods-explore-v2/explore_v2.1.html (Using OAuth2 authorization)
+docs: https://help.opendatasoft.com/apis/ods-explore-v2/explore_v2.1.html
+note: >-
+  The harvested OpenAPI declares only an apiKey scheme, so the mechanical derive pass found no
+  oauth2 flows. The Opendatasoft platform that serves donnees.hydroquebec.com does implement
+  OAuth2, and both endpoints were verified live on the Hydro-Québec domain: /oauth2/authorize/
+  returned HTTP 302 and /oauth2/token/ returned HTTP 405 (POST only) on 2026-07-27. The scope
+  surface is deliberately minimal — the platform documents exactly one scope. This is an
+  authorization surface that exists but is undeclared in the machine-readable contract.
+undeclared_in_spec: true
+schemes:
+- name: oauth2
+  source: https://help.opendatasoft.com/apis/ods-explore-v2/explore_v2.1.html
+  rfc: [RFC 6749, RFC 6750]
+  token_type: Bearer
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://donnees.hydroquebec.com/oauth2/authorize/
+    tokenUrl: https://donnees.hydroquebec.com/oauth2/token/
+    verified: '2026-07-27'
+    authorization_url_status: 302
+    token_url_status: 405
+    parameters: [client_id, redirect_uri, response_type, scope, state]
+    response_type: code
+    authorization_code_length: 30
+    authorization_code_ttl: 1 hour
+    refresh_supported: true
+    state_recommended: true
+scopes:
+- scope: all
+  description: >-
+    Full access to the platform APIs on behalf of the authorizing user. The platform documentation
+    states verbatim that "Currently, only all is supported" — there is no read/write or
+    per-resource scope decomposition.
+  flows: [authorizationCode]
+  sources: [https://help.opendatasoft.com/apis/ods-explore-v2/explore_v2.1.html]
+client_registration:
+  self_service: true
+  url: https://donnees.hydroquebec.com/account/
+  tab: My applications
+  client_types: [confidential, public]
+  domain_bound: true
+  domain_bound_note: >-
+    Applications are registered against one specific domain and can only access data on that
+    domain, so a client registered elsewhere cannot read donnees.hydroquebec.com.
+api_keys:
+  self_service: true
+  url: https://donnees.hydroquebec.com/account/
+  tab: My API keys
+  permissions_note: >-
+    By default an API key authenticates as the user who created it and grants that user's rights,
+    so keys must not be shared. Key permissions can be narrowed through the platform's API key
+    Automation API.
+applicability:
+  note: >-
+    None of this is required to read Hydro-Québec's open data. All 26 datasets are public and
+    anonymously callable. OAuth2 and API keys matter only for authenticated identity, per-user
+    quota, or access to a private catalog — which Hydro-Québec does not operate.

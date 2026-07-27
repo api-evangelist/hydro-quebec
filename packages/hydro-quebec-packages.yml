@@ -1,0 +1,91 @@
+generated: '2026-07-27'
+method: searched
+source: npm registry search, PyPI, GitHub org api.github.com/orgs/Hydro-Quebec
+note: >-
+  Hydro-Québec publishes no client library of its own for the open data Explore API. Its public
+  GitHub organization (github.com/Hydro-Quebec) exists but has zero public repositories, and the
+  only packages under its npm scope (@hydroquebec) are internal SAPUI5 lint/format configs, last
+  released in 2022 — not API clients. The maintained client library for this API is the one
+  published by Opendatasoft, the platform vendor that actually implements and serves the Explore
+  API at donnees.hydroquebec.com; it is recorded here as vendor-official rather than
+  provider-first-party. Registries probed: npm, PyPI, Maven Central, NuGet, pkg.go.dev,
+  RubyGems, Packagist, crates.io.
+packages:
+- language: javascript
+  registry: npm
+  name: "@opendatasoft/api-client"
+  url: https://www.npmjs.com/package/@opendatasoft/api-client
+  install: npm install @opendatasoft/api-client
+  source: https://github.com/opendatasoft/ods-dataviz-sdk
+  license: MIT
+  version_seen: 21.10.1
+  last_published: '2026-07-24'
+  official: false
+  vendor: opendatasoft
+  vendor_official: true
+  targets: openapi/hydro-quebec-open-data-explore-api-v2-1-openapi.json
+  description: >-
+    Opendatasoft's official JavaScript/TypeScript client for the Explore API. Builds ODSQL
+    queries and calls /api/explore/v2.1 on any Opendatasoft domain, including
+    donnees.hydroquebec.com.
+- language: python
+  registry: pypi
+  name: odsclient
+  url: https://pypi.org/project/odsclient/
+  install: pip install odsclient
+  source: https://github.com/smarie/python-odsclient
+  version_seen: 0.8.4
+  official: false
+  vendor: null
+  vendor_official: false
+  community: true
+  description: >-
+    Community Python client for the Opendatasoft APIs; its own summary states it is "A nonofficial
+    client for OpenDataSoft API." Works against any Opendatasoft domain.
+- language: javascript
+  registry: npm
+  name: "@hydroquebec/eslint-config-ui5"
+  url: https://www.npmjs.com/package/@hydroquebec/eslint-config-ui5
+  install: npm install @hydroquebec/eslint-config-ui5
+  version_seen: 1.0.21
+  last_published: '2022-07-05'
+  official: true
+  api_client: false
+  description: Hydro-Québec's ESLint configuration for SAPUI5 development. First-party, but not an API SDK.
+- language: javascript
+  registry: npm
+  name: "@hydroquebec/prettier-config-ui5"
+  url: https://www.npmjs.com/package/@hydroquebec/prettier-config-ui5
+  install: npm install @hydroquebec/prettier-config-ui5
+  version_seen: 1.0.1
+  last_published: '2022-04-05'
+  official: true
+  api_client: false
+  description: Hydro-Québec's Prettier configuration for SAPUI5 development. First-party, but not an API SDK.
+- language: javascript
+  registry: npm
+  name: "@hydroquebec/eslint-plugin-ui5"
+  url: https://www.npmjs.com/package/@hydroquebec/eslint-plugin-ui5
+  install: npm install @hydroquebec/eslint-plugin-ui5
+  version_seen: 0.1.1
+  last_published: '2022-04-05'
+  official: true
+  api_client: false
+  description: ESLint rules for UI5 development, republished under the Hydro-Québec npm scope. Not an API SDK.
+registries_probed:
+- registry: npm
+  result: "@opendatasoft/api-client, @opendatasoft/visualizations, @hydroquebec/* (non-SDK)"
+- registry: pypi
+  result: odsclient (community); no first-party package
+- registry: maven-central
+  result: none
+- registry: nuget
+  result: none
+- registry: pkg.go.dev
+  result: none
+- registry: rubygems
+  result: none
+- registry: packagist
+  result: none
+- registry: crates.io
+  result: none

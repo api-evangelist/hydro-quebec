@@ -1,0 +1,168 @@
+generated: '2026-07-27'
+method: derived
+source: >-
+  openapi/hydro-quebec-open-data-explore-api-v2-1-openapi.json (components.schemas and path
+  hierarchy), enriched with the live catalog read from
+  https://donnees.hydroquebec.com/api/explore/v2.1/catalog/datasets on 2026-07-27
+note: >-
+  The Explore API has a small, generic entity graph — catalog, dataset, record, facet, attachment —
+  because it is a data-portal API, not a domain API. The domain lives one level down, in the fields
+  of each of Hydro-Québec's 26 datasets, which the API models as untyped additionalProperties on
+  the record schema. Both layers are captured here: the generic contract graph derived from the
+  spec, and the actual Hydro-Québec data domains derived from the live catalog.
+entities:
+- name: catalog
+  root: true
+  path: /catalog
+  description: >-
+    The domain's dataset collection. Not a schema in the spec — it is the path root every operation
+    hangs off, and the target of the DCAT export.
+  identified_by: domain host (donnees.hydroquebec.com)
+  operations: [getDatasets, getDatasetsFacets, listExportFormats, exportDatasets, exportCatalogCSV, exportCatalogDCAT]
+- name: dataset
+  schema: '#/components/schemas/dataset'
+  description: One published dataset with its field definitions, metadata and feature flags.
+  identified_by: dataset_id
+  alternate_id: dataset_uid
+  fields: [dataset_id, dataset_uid, attachments, has_records, data_visible, features, metas, fields, _links]
+  operations: [getDataset, getRecords, getRecordsFacets, getDatasetAttachments, listDatasetExportFormats,
+    exportRecords, exportRecordsCSV, exportRecordsParquet, exportRecordsGPX]
+  count: 26
+  count_verified: '2026-07-27'
+- name: datasets
+  schema: '#/components/schemas/datasets'
+  description: Paged envelope around dataset. Carries total_count, results and _links.
+  envelope_of: dataset
+- name: record
+  schema: '#/components/schemas/record'
+  description: >-
+    One row of one dataset. The spec declares only the four platform fields; every domain field is
+    additionalProperties of type any, so the record shape is dataset-specific and is discovered
+    from dataset.fields rather than from the spec.
+  identified_by: _id
+  fields: [_id, _timestamp, _size, _links]
+  domain_fields: additionalProperties (untyped)
+  operations: [getRecords, getRecord]
+- name: records
+  schema: '#/components/schemas/records'
+  description: Paged envelope around record. Carries total_count, results and _links.
+  envelope_of: record
+- name: facet_enumeration
+  schema: '#/components/schemas/facet_enumeration'
+  description: A named facet on a dataset or on the catalog, with its enumerated values.
+  identified_by: name
+  operations: [getDatasetsFacets, getRecordsFacets]
+- name: facet_value_enumeration
+  schema: '#/components/schemas/facet_value_enumeration'
+  description: One value of a facet, with its record count and selection state.
+  fields: [name, count, value, state]
+- name: attachment
+  schema: '#/components/schemas/attachment'
+  description: A file attached to a dataset — documentation, methodology, source files.
+  identified_by: metas.id
+  fields: [href, metas.mime-type, metas.title, metas.url, metas.id]
+  operations: [getDatasetAttachments]
+- name: links
+  schema: '#/components/schemas/links'
+  description: >-
+    Hypermedia control present on every entity. rel is an enum of self, first, last, next, dataset,
+    catalog — so the graph edges are declared in the contract itself.
+  fields: [href, rel]
+relationships:
+- from: catalog
+  to: dataset
+  type: has_many
+  via: /catalog/datasets
+  evidence: path hierarchy; datasets.results is an array of dataset
+- from: dataset
+  to: catalog
+  type: belongs_to
+  via: _links[rel=catalog]
+  evidence: links.rel enum includes "catalog"
+- from: dataset
+  to: record
+  type: has_many
+  via: /catalog/datasets/{dataset_id}/records
+  evidence: records.results is an array of record under the dataset path
+- from: record
+  to: dataset
+  type: belongs_to
+  via: _links[rel=dataset]
+  evidence: links.rel enum includes "dataset"
+- from: dataset
+  to: attachment
+  type: has_many
+  via: dataset.attachments and /catalog/datasets/{dataset_id}/attachments
+  evidence: dataset schema declares an attachments array; getDatasetAttachments returns attachment
+- from: dataset
+  to: facet_enumeration
+  type: has_many
+  via: /catalog/datasets/{dataset_id}/facets
+  evidence: getRecordsFacets
+- from: catalog
+  to: facet_enumeration
+  type: has_many
+  via: /catalog/facets
+  evidence: getDatasetsFacets
+- from: facet_enumeration
+  to: facet_value_enumeration
+  type: has_many
+  via: facets
+  evidence: '$ref from facet_enumeration.facets to facet_value_enumeration'
+- from: datasets
+  to: dataset
+  type: has_many
+  via: results
+  evidence: '$ref'
+- from: records
+  to: record
+  type: has_many
+  via: results
+  evidence: '$ref'
+id_conventions:
+  dataset_id: >-
+    Human-readable slug, French-language, kebab-case. Examples from the live catalog —
+    historique-demande-electricite-quebec, pannes-interruptions, facteurges,
+    calendrier-travaux-degagement-distribution-shap.
+  dataset_uid: Opaque platform identifier, readOnly.
+  record_id: Opaque per-record identifier returned as _id.
+  note: >-
+    No prefixed or typed ids. The dataset_id slug encodes format suffixes (-json, -shap) and
+    granularity suffixes (-ra-mois, -mrc-mois, -mun-mois) by convention rather than by contract.
+domain_layer:
+  note: >-
+    Derived from the live catalog, not from the spec. These are the actual Hydro-Québec subject
+    domains a consumer navigates to, grouped by the theme facet.
+  themes:
+  - theme: Electricity consumption
+    datasets: [historique-demande-electricite-quebec, demande-electricite-quebec,
+      historique-production-consommation-ec-horaire, historique-production-consommation-proxy-horaire,
+      importations-exportations-avec-transits, evenements-pointe, evenements-de-pointe-offres-disponibles,
+      consommation-clients-evenements-pointe, historique-consommation-secteur-activite-ra-annuel,
+      historique-consommation-secteur-activite-ra-mois, historique-consommation-secteur-activite-mrc-mois,
+      historique-consommation-secteur-activite-mun-mois]
+  - theme: Infrastructure and grid
+    datasets: [production-electricite-quebec, historique-production-electricite-quebec,
+      pannes-interruptions, calendrier-travaux-degagement-transport-json,
+      calendrier-travaux-degagement-transport-shap, calendrier-travaux-degagement-distribution-json,
+      calendrier-travaux-degagement-distribution-shap]
+  - theme: GHG emissions and the energy transition
+    datasets: [facteurges, facteurs-directs-ges, estimation-emissions-directes-ges,
+      donnees-hydrometriques, donnees-hydrometeorologiques, historique-donnees-meteo, repertoire-arbres]
+  geospatial:
+    supported: true
+    evidence: >-
+      Shapefile and GPX export formats, an epsg parameter, and the geometry ODSQL functions
+      (within_distance, intersects, disjoint, within, geo_cluster).
+    datasets: [calendrier-travaux-degagement-transport-shap, calendrier-travaux-degagement-distribution-shap,
+      pannes-interruptions, repertoire-arbres]
+  temporal:
+    supported: true
+    evidence: >-
+      Date ODSQL functions (year, month, day, hour, minute, second, date_format) and hourly
+      generation/consumption series.
+  absent:
+  - No customer, account, meter, premise, service point or bill entity exists anywhere in the model.
+  - No consumption entity at individual-customer granularity — the finest published grain is
+    municipality-by-month by industry sector.
+render: null

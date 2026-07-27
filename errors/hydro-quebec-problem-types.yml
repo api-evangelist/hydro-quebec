@@ -1,0 +1,123 @@
+generated: '2026-07-27'
+method: derived
+source: >-
+  openapi/hydro-quebec-open-data-explore-api-v2-1-openapi.json (4xx/5xx responses and
+  components.responses examples) plus live error responses observed against
+  https://donnees.hydroquebec.com/api/explore/v2.1 on 2026-07-27
+format: proprietary
+note: >-
+  Not RFC 9457. The Explore API returns a two-field JSON envelope on 4xx errors, served as
+  application/json; charset=utf-8. Every one of the 16 operations declares the same
+  400/401/429/500 response set, so the catalog below is API-wide rather than per-operation.
+  The 429 body uses a different, numeric envelope.
+envelopes:
+- name: error
+  applies_to: [400, 404]
+  media_type: application/json; charset=utf-8
+  schema:
+    type: object
+    required: [message, error_code]
+    properties:
+      error_code: {type: string}
+      message: {type: string}
+  example:
+    error_code: ODSQLError
+    message: 'ODSQL query is malformed: invalid_function() Clause(s) containing the error(s): select.'
+- name: quota
+  applies_to: [429]
+  media_type: application/json; charset=utf-8
+  schema:
+    type: object
+    required: [errorcode, reset_time, limit_time_unit, call_limit, error]
+    properties:
+      errorcode: {type: number}
+      reset_time: {type: string}
+      limit_time_unit: {type: string}
+      call_limit: {type: number}
+      error: {type: string}
+  example:
+    errorcode: 10002
+    reset_time: '2021-01-26T00:00:00Z'
+    limit_time_unit: day
+    call_limit: 10000
+    error: Too many requests on the domain. Please contact the domain administrator.
+problems:
+- status: 400
+  error_code: ODSQLError
+  title: ODSQL query is malformed
+  detail: The ODSQL expression in one of the query clauses could not be parsed.
+  remediation: >-
+    Check the named clause (select, where, group_by, order_by) against the ODSQL reference. Only
+    the documented functions and operators are accepted.
+  evidence: spec example components.responses.bad_request.examples.invalid_odsql
+  source_operation: openapi/hydro-quebec-open-data-explore-api-v2-1-openapi.json#getRecords
+- status: 400
+  error_code: ODSQLSyntaxError
+  title: ODSQL syntax exception
+  detail: >-
+    Observed verbatim — "ODSQL syntax exception: unexpected ( at position 5 in bogus(. Clause(s)
+    containing the error(s): where." The message names the offending position and clause.
+  remediation: Correct the syntax at the reported position in the reported clause.
+  evidence: live probe 2026-07-27, GET /catalog/datasets?where=bogus(
+  source_operation: openapi/hydro-quebec-open-data-explore-api-v2-1-openapi.json#getDatasets
+- status: 404
+  error_code: NotFoundResource
+  title: The requested resource does not exist
+  detail: >-
+    Observed verbatim — "The requested dataset nonexistent-dataset-xyz does not exist." Returned
+    when a {dataset_id} or {record_id} path parameter names something that is not in the catalog.
+  remediation: >-
+    List the catalog with getDatasets and use a dataset_id from the results. Hydro-Québec publishes
+    26 datasets.
+  evidence: live probe 2026-07-27, GET /catalog/datasets/nonexistent-dataset-xyz
+  source_operation: openapi/hydro-quebec-open-data-explore-api-v2-1-openapi.json#getDataset
+  note: >-
+    404 is NOT declared on any operation in either harvested spec — a real gap between the
+    published contract and observed behaviour.
+- status: 404
+  error_code: NotFoundURI
+  title: The requested URI does not exist
+  detail: >-
+    Observed verbatim — "The requested URI does not exist." Returned for an unrouted path under
+    the API prefix, e.g. /api/v1/swagger.json and /api/explore/v2.1/openapi.json.
+  remediation: Check the path against the OpenAPI description; only the 16 documented paths route.
+  evidence: live probe 2026-07-27
+  source_operation: null
+  note: Also undeclared in the specs.
+- status: 401
+  error_code: null
+  title: Unauthorized
+  detail: >-
+    Declared inline on all 16 operations with the bare description "Unauthorized". The platform
+    documents it as the response when accessing a private portal's catalog unauthenticated. The
+    Hydro-Québec portal is public, so anonymous calls return 200; 401 was not reproducible.
+  remediation: >-
+    Supply an API key as "Authorization: Apikey <key>" or ?apikey=<key>. Not required for
+    Hydro-Québec's public datasets.
+  source_operation: all 16 operations
+- status: 429
+  error_code: '10002'
+  title: Too many requests
+  detail: >-
+    Domain-level quota exceeded. The body reports call_limit, limit_time_unit and reset_time.
+    Rate-limit state is also returned on every 2xx response in X-RateLimit-* headers.
+  remediation: >-
+    Read X-RateLimit-Remaining and X-RateLimit-Reset before retrying, and back off until the reset
+    timestamp. Prefer the exports endpoints over paging the records endpoint for bulk pulls.
+  evidence: components.responses.quota.examples.quota_exceeded
+  source_operation: all 16 operations
+- status: 500
+  error_code: null
+  title: Internal Server Error
+  detail: Declared inline on all 16 operations with the bare description "Internal Server Error".
+  remediation: Retry — all operations are GET and therefore safe to retry. Escalate to the Open Data team if persistent.
+  source_operation: all 16 operations
+gaps:
+- >-
+  No 404 response is declared on any operation despite the API returning NotFoundResource and
+  NotFoundURI in practice.
+- >-
+  The 401 and 500 responses carry no schema — only a description string — so a client cannot
+  generate a typed error from the spec for those statuses.
+- No error type URIs. error_code is an opaque string with no registry or documentation page.
+docs: https://help.opendatasoft.com/apis/ods-explore-v2/explore_v2.1.html

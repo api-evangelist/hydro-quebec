@@ -1,0 +1,55 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Hydro-Québec Open Data Explore API v2.0
+  version: 1.0.0
+extends: openapi/hydro-quebec-open-data-explore-api-v2-0-openapi.json
+x-generated: '2026-07-27'
+x-method: generated
+x-source: >-
+  API Evangelist enrichment pipeline; the deprecation values below were read from live response
+  headers on https://donnees.hydroquebec.com/api/explore/v2.0/catalog/datasets on 2026-07-27.
+actions:
+- target: $.info
+  update:
+    x-apievangelist-provider: hydro-quebec
+    x-apievangelist-status: deprecated
+    x-apievangelist-successor: openapi/hydro-quebec-open-data-explore-api-v2-1-openapi.json
+    x-apievangelist-license: CC BY-NC 4.0
+    x-apievangelist-license-url: https://www.hydroquebec.com/documents-data/open-data/licence.html
+    x-apievangelist-verified: '2026-07-27'
+    x-apievangelist-deprecation-header: >-
+      ODS-Explore-API-Deprecation: deprecated API version (v2.0), please use the current v2.1 version
+    x-apievangelist-deprecation-link: https://help.opendatasoft.com/apis/ods-explore-v2/explore_v2.1.html#section/Introduction/v2.1-Changelog
+    x-apievangelist-sunset-date: null
+    x-apievangelist-sunset-note: >-
+      No RFC 8594 Sunset header and no announced retirement date. The version is signalled as
+      deprecated but still serving HTTP 200.
+- target: $.servers
+  update:
+  - url: https://donnees.hydroquebec.com/api/explore/v2.0
+    description: Hydro-Québec open data portal (deprecated version, still serving)
+- target: $.info
+  update:
+    x-apievangelist-removed-in-v2-1:
+    - /catalog/datasets/{dataset_id}/aggregates
+    - /catalog/datasets/{dataset_id}/query
+    x-apievangelist-removal-note: >-
+      Both endpoints were merged into the single records endpoint in v2.1. Neither appears in this
+      harvested v2.0 document, but the platform changelog records them as v2.0 surface.
+- target: $.components.securitySchemes
+  update:
+    apikeyHeader:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Documented platform alternative — Authorization: Apikey <API_KEY>.'
+- target: $.info
+  update:
+    x-apievangelist-rate-limit-headers:
+    - X-RateLimit-Limit
+    - X-RateLimit-Remaining
+    - X-RateLimit-Reset
+    x-apievangelist-error-envelope: '{"error_code": string, "message": string}'
+    x-apievangelist-idempotency: >-
+      All 16 operations are HTTP GET — safe and idempotent by HTTP semantics; no idempotency-key
+      contract exists because there are no write operations.

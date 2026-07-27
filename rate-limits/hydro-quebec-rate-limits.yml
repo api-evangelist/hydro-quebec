@@ -1,0 +1,71 @@
+generated: '2026-07-27'
+method: probed
+source: >-
+  live response headers from https://donnees.hydroquebec.com/api/explore/v2.1/catalog/datasets
+  (2026-07-27) and https://help.opendatasoft.com/apis/ods-explore-v2/explore_v2.1.html
+note: >-
+  Hydro-Québec publishes no rate-limit policy page. The API does signal quota state on every
+  response, and the observed values were read directly off the wire. The domain limit returned is
+  a 23-digit sentinel (99999999999999999999999), i.e. the portal is configured with no practical
+  daily cap for anonymous callers — recorded here as observed rather than interpreted as a
+  guarantee.
+signalling:
+  headers:
+  - name: X-RateLimit-Limit
+    scope: domain
+    meaning: Total API calls allowed in a single day.
+    observed: '99999999999999999999999'
+  - name: X-RateLimit-Remaining
+    scope: domain
+    meaning: Calls remaining until reset.
+    observed: '99999999999999999999990'
+  - name: X-RateLimit-Reset
+    scope: domain
+    meaning: Timestamp at which the counter resets.
+    observed: '2026-07-28 00:00:00+00:00'
+    format: 'YYYY-MM-DD HH:MM:SS+00:00 — not epoch seconds, not an HTTP-date'
+  - name: X-RateLimit-dataset-Limit
+    scope: dataset
+    meaning: Per-dataset call allowance.
+    observed: not returned on catalog endpoints
+  - name: X-RateLimit-dataset-Remaining
+    scope: dataset
+    observed: not returned on catalog endpoints
+  - name: X-RateLimit-dataset-Reset
+    scope: dataset
+    observed: not returned on catalog endpoints
+  cors_exposed: true
+  returned_on: every response, including 2xx
+rate_limits:
+- name: domain daily quota
+  scope: domain
+  limit_count: 99999999999999999999999
+  limit_interval: day
+  reset: midnight UTC
+  applies_to: anonymous and authenticated callers on donnees.hydroquebec.com
+  observed: '2026-07-27'
+  note: >-
+    Effectively unlimited as configured. The header is a real, live value, not a documented policy
+    — Opendatasoft states the domain rate limit varies from portal to portal.
+- name: per-dataset quota
+  scope: dataset
+  limit_count: null
+  limit_interval: day
+  applies_to: individual datasets when the portal administrator configures one
+  observed: not enforced on the endpoints probed
+exceeded:
+  status: 429
+  body_fields: [errorcode, reset_time, limit_time_unit, call_limit, error]
+  errorcode: 10002
+  example_message: Too many requests on the domain. Please contact the domain administrator.
+  detail: errors/hydro-quebec-problem-types.yml
+record_limits:
+  records_endpoint_capped: true
+  exports_endpoint_capped: false
+  note: >-
+    Separate from call quota, the records endpoint caps the number of records a single query
+    returns while the exports endpoints are documented as having no limitation. Bulk pulls of the
+    large Hydro-Québec datasets should use exports rather than paging.
+pricing: free
+plans: none
+license: CC BY-NC 4.0 — non-commercial use only

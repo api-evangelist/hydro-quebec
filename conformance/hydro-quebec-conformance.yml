@@ -1,0 +1,127 @@
+generated: '2026-07-27'
+method: derived
+source: >-
+  openapi/hydro-quebec-open-data-explore-api-v2-1-openapi.json, live probes of
+  donnees.hydroquebec.com (2026-07-27), and the Opendatasoft Explore API v2.1 platform reference
+  at https://help.opendatasoft.com/apis/ods-explore-v2/explore_v2.1.html
+note: >-
+  Conformance assertions only. Hydro-Québec publishes no certification or compliance program for
+  this API (no SOC 2, ISO 27001, PCI, HIPAA or FedRAMP claim was found on hydroquebec.com or the
+  open data portal), so no Compliance pointer is emitted.
+standards:
+- id: openapi-3.0
+  conforms: true
+  evidence: >-
+    Both harvested descriptions declare "openapi": "3.0.3" and parse as valid OpenAPI with 16
+    operations each.
+- id: rest
+  conforms: true
+  evidence: >-
+    Resource-oriented hierarchical paths under /catalog; GET-only; JSON responses; hypermedia
+    "links" arrays on every response body.
+- id: oauth2
+  conforms: true
+  evidence: >-
+    Platform implements the RFC 6749 authorization code flow. /oauth2/authorize/ returned HTTP 302
+    and /oauth2/token/ returned HTTP 405 (POST only) on donnees.hydroquebec.com, 2026-07-27.
+    Not declared in the harvested OpenAPI securitySchemes.
+- id: rfc6750-bearer-token
+  conforms: true
+  evidence: Platform docs state the OAuth2 flow uses Bearer Tokens in compliance with RFC 6750.
+- id: oidc
+  conforms: false
+  evidence: /.well-known/openid-configuration returned HTTP 404 on donnees.hydroquebec.com.
+- id: rfc8414-oauth-authorization-server-metadata
+  conforms: false
+  evidence: /.well-known/oauth-authorization-server returned HTTP 404.
+- id: rfc9116-security-txt
+  conforms: true
+  evidence: >-
+    /.well-known/security.txt returned HTTP 200 with Contact, Expires and Preferred-Languages
+    fields. Saved verbatim to well-known/hydro-quebec-security.txt. Platform-vendor authored.
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: >-
+    Errors return a proprietary {"error_code","message"} JSON envelope with content-type
+    application/json; charset=utf-8. No application/problem+json anywhere in either spec.
+- id: rfc8594-sunset-header
+  conforms: false
+  evidence: >-
+    v2.0 is signalled as deprecated via a proprietary ODS-Explore-API-Deprecation header and a
+    Link; rel="deprecation" (RFC 8288), but no Sunset header and no retirement date are published.
+- id: rfc8288-web-linking
+  conforms: true
+  evidence: >-
+    v2.0 responses carry Link: <...>; rel="deprecation"; type="text/html". Response bodies also
+    carry a "links" array with rel/href pairs on every endpoint.
+- id: dcat
+  conforms: true
+  evidence: >-
+    /catalog/exports/dcat returns RDF/XML with dcat:, dcterms:, foaf: and dcatap: namespaces.
+    Operation exportCatalogDCAT; verified HTTP 200 anonymously 2026-07-27.
+- id: dcat-ap
+  conforms: true
+  evidence: >-
+    The exportCatalogDCAT operation takes a dcat_ap_format path parameter and the RDF output
+    declares the DCAT-AP namespace http://data.europa.eu/r5r/.
+- id: cors
+  conforms: true
+  evidence: >-
+    Access-Control-Allow-Origin "*" with Access-Control-Expose-Headers listing the deprecation,
+    Link and all six rate-limit headers.
+- id: hsts
+  conforms: true
+  evidence: strict-transport-security max-age=31536000; includeSubdomains on donnees.hydroquebec.com.
+- id: cc-by-nc-4.0
+  conforms: true
+  evidence: >-
+    Hydro-Québec adopted Creative Commons Attribution – Non-Commercial 4.0 International as its
+    collective open licence. https://www.hydroquebec.com/documents-data/open-data/licence.html
+- id: green-button
+  conforms: false
+  evidence: >-
+    No Green Button Download My Data or Connect My Data service. Consumer consumption data is not
+    exposed by any API; Québec has no consumer energy data right.
+- id: cdr-energy
+  conforms: false
+  evidence: >-
+    Canada has no equivalent to Australia's Consumer Data Right energy regime, and Ontario's Green
+    Button regulation (O. Reg. 633/21) does not bind a Québec utility.
+- id: openadr
+  conforms: false
+  evidence: >-
+    Demand response participation is published only as historical datasets
+    (consommation-clients-evenements-pointe, evenements-pointe); no OpenADR VTN/VEN interface.
+- id: ieee-2030.5
+  conforms: false
+  evidence: No smart energy profile / IEEE 2030.5 surface published.
+- id: asyncapi
+  conforms: false
+  evidence: >-
+    No event, streaming or webhook surface. Event-shaped datasets (pannes-interruptions,
+    evenements-pointe) are polled through the same GET record endpoints.
+- id: graphql
+  conforms: false
+  evidence: No /graphql endpoint on donnees.hydroquebec.com or the Opendatasoft platform.
+- id: grpc
+  conforms: false
+  evidence: No published .proto; nothing on buf.build or the (empty) Hydro-Quebec GitHub org.
+- id: json-api
+  conforms: false
+  evidence: Responses are plain JSON with a links array, not JSON:API media type or document structure.
+- id: pagination
+  conforms: true
+  evidence: >-
+    limit and offset parameters declared in components.parameters and applied to getDatasets,
+    getRecords and the facet operations. Offset pagination.
+- id: idempotency
+  conforms: true
+  evidence: >-
+    "Only the HTTP GET method is supported" (spec info.description). All 16 operations are safe
+    and idempotent by HTTP semantics. No idempotency-key contract exists because there are no
+    write operations.
+- id: rate-limit-headers
+  conforms: true
+  evidence: >-
+    X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset and the per-dataset variants
+    returned on every response and exposed via CORS. Not the RFC 9331 draft spelling.

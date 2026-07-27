@@ -1,0 +1,64 @@
+generated: '2026-07-27'
+method: generated
+source: >-
+  Grounded in openapi/hydro-quebec-open-data-explore-api-v2-1-openapi.json (every operationId
+  verified against the spec), conventions/hydro-quebec-conventions.yml,
+  errors/hydro-quebec-problem-types.yml, rate-limits/hydro-quebec-rate-limits.yml, and the live
+  dataset catalog read on 2026-07-27.
+note: >-
+  Hydro-Québec publishes no AGENTS.md, skill files or agent guidance — none was found on
+  hydroquebec.com or donnees.hydroquebec.com. These skills are generated, one per marquee flow
+  the 26-dataset catalog actually supports. Dataset ids, field names and record counts in the
+  skills were read from the live API, not invented.
+api: openapi/hydro-quebec-open-data-explore-api-v2-1-openapi.json
+base_url: https://donnees.hydroquebec.com/api/explore/v2.1
+skills:
+- file: hydro-quebec-discover-datasets.md
+  name: Discover Hydro-Québec open datasets
+  description: >-
+    Find which of the 26 public datasets holds the data you need, read its field schema, and
+    confirm its size before querying. The prerequisite for every other skill.
+  api: openapi/hydro-quebec-open-data-explore-api-v2-1-openapi.json
+  operations: [getDatasets, getDatasetsFacets, getDataset, getRecordsFacets, getDatasetAttachments, exportCatalogDCAT]
+- file: hydro-quebec-query-demand-and-generation.md
+  name: Query Québec electricity demand and generation
+  description: >-
+    Pull demand, generation-mix and import/export series with ODSQL, including time-bucketed
+    aggregates, without paging more than necessary.
+  api: openapi/hydro-quebec-open-data-explore-api-v2-1-openapi.json
+  operations: [getDataset, getRecords, getRecord, getRecordsFacets]
+- file: hydro-quebec-bulk-export.md
+  name: Bulk export a Hydro-Québec dataset
+  description: >-
+    Pull an entire dataset — including the 2.3M-row weather history — through the uncapped export
+    endpoints instead of paging the records endpoint.
+  api: openapi/hydro-quebec-open-data-explore-api-v2-1-openapi.json
+  operations: [getDataset, listDatasetExportFormats, exportRecords, exportRecordsCSV, exportRecordsParquet,
+    exportRecordsGPX, listExportFormats, exportDatasets, exportCatalogCSV, exportCatalogDCAT]
+- file: hydro-quebec-track-outages-and-peak-events.md
+  name: Track Hydro-Québec outages and winter peak events
+  description: >-
+    Poll the ongoing-outage, planned-interruption and winter peak-demand datasets, and handle the
+    absence of any webhook or event stream.
+  api: openapi/hydro-quebec-open-data-explore-api-v2-1-openapi.json
+  operations: [getDataset, getRecords, getRecordsFacets, exportRecords]
+- file: hydro-quebec-carbon-intensity.md
+  name: Compute Québec electricity carbon intensity
+  description: >-
+    Combine the published direct GHG emission factors with the generation-mix and import/export
+    series to derive an emissions figure, using only published factors.
+  api: openapi/hydro-quebec-open-data-explore-api-v2-1-openapi.json
+  operations: [getDataset, getRecords, getRecordsFacets, exportRecords]
+operations_covered: [getDatasets, getDatasetsFacets, getDataset, getRecords, getRecord,
+  getRecordsFacets, getDatasetAttachments, listExportFormats, listDatasetExportFormats,
+  exportDatasets, exportRecords, exportCatalogCSV, exportRecordsCSV, exportRecordsParquet,
+  exportRecordsGPX, exportCatalogDCAT]
+operations_total: 16
+coverage: 16/16
+cross_references:
+- conventions/hydro-quebec-conventions.yml
+- errors/hydro-quebec-problem-types.yml
+- rate-limits/hydro-quebec-rate-limits.yml
+- authentication/hydro-quebec-authentication.yml
+- lifecycle/hydro-quebec-lifecycle.yml
+- data-model/hydro-quebec-data-model.yml

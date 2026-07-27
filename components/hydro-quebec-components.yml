@@ -1,0 +1,52 @@
+generated: '2026-07-27'
+method: searched
+source: npm registry (2026-07-27), the Hydro-Québec open data portal page markup
+note: >-
+  Hydro-Québec authors no embeddable component library of its own. The client-side surface a
+  developer can embed against this data is the Opendatasoft platform's — the same platform that
+  renders donnees.hydroquebec.com's own charts, maps and dataset explorer. Recorded with vendor
+  provenance rather than as first-party components.
+first_party: false
+vendor: opendatasoft
+families:
+- family: visualization components
+  packages:
+  - name: "@opendatasoft/visualizations"
+    registry: npm
+    url: https://www.npmjs.com/package/@opendatasoft/visualizations
+    version_seen: 0.35.0
+    description: Opendatasoft's components to easily build dashboards and visualizations.
+    framework: framework-agnostic
+    official: false
+    vendor_official: true
+  - name: "@opendatasoft/visualizations-react"
+    registry: npm
+    url: https://www.npmjs.com/package/@opendatasoft/visualizations-react
+    version_seen: 0.35.0
+    description: Opendatasoft's React wrapper for visualization components.
+    framework: react
+    official: false
+    vendor_official: true
+  source: https://github.com/opendatasoft/ods-dataviz-sdk
+  binds_to: >-
+    The same Explore API v2.1 operations catalogued in openapi/ — dataset_id plus an ODSQL query
+    feeds the chart/map components directly.
+- family: hosted portal surfaces
+  hosted: true
+  surfaces:
+  - name: Dataset explorer
+    url: https://donnees.hydroquebec.com/explore/
+    note: Browse, filter and preview all 26 datasets. Rendered by the platform, not embeddable as a component.
+  - name: Interactive API console
+    url: https://donnees.hydroquebec.com/api/v2/console
+    note: In-browser request builder over the harvested OpenAPI description.
+  - name: Themed dataset pages
+    url: https://donnees.hydroquebec.com/explore/?refine.theme=Electricity+consumption
+    note: Per-theme catalog views — Electricity consumption, Infrastructure and grid, GHG emissions and the energy transition.
+  embeddable: true
+  embeddable_note: >-
+    Opendatasoft dataset pages expose per-visualization embed codes (iframe) from the portal UI.
+    No documented embed contract is published by Hydro-Québec.
+not_available:
+- No Hydro-Québec-published web components, element library or embed SDK.
+- No embedded customer dashboard — there is no customer-facing API to back one.

@@ -1,0 +1,86 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Hydro-Québec Open Data Explore API v2.1
+  version: 1.0.0
+extends: openapi/hydro-quebec-open-data-explore-api-v2-1-openapi.json
+x-generated: '2026-07-27'
+x-method: generated
+x-source: >-
+  API Evangelist enrichment pipeline; values verified by live probes of
+  donnees.hydroquebec.com on 2026-07-27. Applies to the harvested spec without mutating it.
+actions:
+- target: $.info
+  update:
+    x-apievangelist-provider: hydro-quebec
+    x-apievangelist-status: current
+    x-apievangelist-license: CC BY-NC 4.0
+    x-apievangelist-license-url: https://www.hydroquebec.com/documents-data/open-data/licence.html
+    x-apievangelist-anonymous-access: true
+    x-apievangelist-datasets: 26
+    x-apievangelist-verified: '2026-07-27'
+- target: $.info
+  update:
+    contact:
+      name: Hydro-Québec Open Data team
+      url: https://www.hydroquebec.com/sefco2016/en/open-data-contact-us.html
+    x-original-contact-email: support@opendatasoft.com
+- target: $.servers
+  update:
+  - url: https://donnees.hydroquebec.com/api/explore/v2.1
+    description: Hydro-Québec open data portal (production)
+  - url: https://hydroquebec.opendatasoft.com/api/explore/v2.1
+    description: Opendatasoft-native alias for the same portal (verified HTTP 200, 2026-07-27)
+- target: $.components.securitySchemes
+  update:
+    apikeyHeader:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: >-
+        Documented but undeclared in the harvested spec. The Opendatasoft platform accepts the API
+        key in the Authorization header as "Apikey <API_KEY>", and recommends it over the query
+        parameter because headers are not stored in browser history or server logs.
+    oauth2:
+      type: oauth2
+      description: >-
+        Documented but undeclared in the harvested spec. Platform OAuth2 authorization code flow,
+        RFC 6749 with RFC 6750 bearer tokens. Endpoints verified live on this domain.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://donnees.hydroquebec.com/oauth2/authorize/
+          tokenUrl: https://donnees.hydroquebec.com/oauth2/token/
+          scopes:
+            all: Full access on behalf of the authorizing user (the only scope the platform supports)
+- target: $.info
+  update:
+    x-apievangelist-rate-limit-headers:
+    - X-RateLimit-Limit
+    - X-RateLimit-Remaining
+    - X-RateLimit-Reset
+    - X-RateLimit-dataset-Limit
+    - X-RateLimit-dataset-Remaining
+    - X-RateLimit-dataset-Reset
+    x-apievangelist-error-envelope: '{"error_code": string, "message": string}'
+    x-apievangelist-error-format: proprietary (not RFC 9457 application/problem+json)
+    x-apievangelist-idempotency: >-
+      All 16 operations are HTTP GET. Every operation is safe and idempotent by HTTP semantics;
+      there is no idempotency-key contract because there are no write operations.
+- target: $.tags
+  update:
+  - name: Catalog
+    description: API to enumerate datasets
+    x-apievangelist-operations: 7
+  - name: Dataset
+    description: API to work on records
+    x-apievangelist-operations: 9
+- target: $.paths['/catalog/datasets/{dataset_id}/records'].get
+  update:
+    x-apievangelist-notes: >-
+      Paged and capped. Use the exports endpoints for bulk pulls — those are documented as having
+      no record limit. Large Hydro-Québec datasets (historique-donnees-meteo at 2.3M records,
+      calendrier-travaux-degagement-distribution-shap at 649k) should be exported, not paged.
+- target: $.paths['/catalog/exports/dcat{dcat_ap_format}'].get
+  update:
+    x-apievangelist-notes: >-
+      DCAT RDF/XML export of the whole catalog — the machine-readable dataset inventory for the
+      26 public Hydro-Québec datasets. Verified HTTP 200 anonymously on 2026-07-27.

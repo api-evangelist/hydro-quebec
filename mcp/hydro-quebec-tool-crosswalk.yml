@@ -1,0 +1,87 @@
+generated: '2026-07-27'
+method: derived
+source: mcp/hydro-quebec-mcp.yml + openapi/hydro-quebec-open-data-explore-api-v2-1-openapi.json
+note: >-
+  Binds each Opendatasoft MCP tool exposed by the live Pipeworx gateway to the OpenAPI operation
+  that backs it in the Hydro-Québec Explore API v2.1 description. The MCP tool schemas here were
+  read from a real tools/list response, so every binding is name-and-parameter verifiable rather
+  than guessed. Confidence is high where the tool's arguments map one-for-one onto the operation's
+  declared parameters, medium where the tool uses legacy Search API v1 argument names (rows/start)
+  that the v2.1 operation expresses as limit/offset.
+surfaces:
+  openapi:
+    file: openapi/hydro-quebec-open-data-explore-api-v2-1-openapi.json
+    base_url: https://donnees.hydroquebec.com/api/explore/v2.1
+    operations: 16
+    gated: false
+  graphql:
+    endpoint: null
+    note: Hydro-Québec publishes no GraphQL surface; the Opendatasoft platform does not expose one.
+  mcp:
+    url: https://gateway.pipeworx.io/opendatasoft/mcp
+    official: false
+    gated: false
+    note: tools/list returned HTTP 200 anonymously on 2026-07-27
+crosswalk:
+- tool: datasets
+  category: catalog
+  rest: [getDatasets]
+  binding: rest
+  confidence: medium
+  note: >-
+    Tool arguments q/rows/start/sort/facet are the Search API v1 spellings; getDatasets expresses
+    the same contract as where/limit/offset/order_by/refine in v2.1 ODSQL.
+- tool: dataset
+  category: catalog
+  rest: [getDataset]
+  binding: rest
+  confidence: high
+  note: dataset_id maps directly onto the {dataset_id} path parameter.
+- tool: records
+  category: data
+  rest: [getRecords]
+  binding: rest
+  confidence: high
+  note: >-
+    where/select/group_by/order_by/limit/offset are the exact ODSQL parameter names getRecords
+    declares in components.parameters.
+- tool: facets
+  category: data
+  rest: [getRecordsFacets]
+  binding: rest
+  confidence: high
+  note: dataset_id + facet map onto {dataset_id} and the facet parameter.
+- tool: instance_info
+  category: catalog
+  rest: [getDatasets, getDatasetsFacets]
+  binding: rest
+  confidence: low
+  note: >-
+    Composite — catalog-level counts/themes/languages are assembled from the catalog listing and
+    catalog facets rather than from a single dedicated operation.
+mcp_only: []
+rest_only:
+- capability: catalog export
+  operations: [listExportFormats, exportDatasets, exportCatalogCSV, exportCatalogDCAT]
+  reason: >-
+    Bulk/format exports of the dataset catalog (CSV, DCAT RDF/XML) have no MCP tool; agents must
+    call the REST endpoints directly.
+- capability: dataset export
+  operations: [listDatasetExportFormats, exportRecords, exportRecordsCSV, exportRecordsParquet, exportRecordsGPX]
+  reason: >-
+    Unlimited bulk record exports (CSV, Parquet, GPX) have no MCP tool. This is the significant
+    divergence — the MCP surface is limited to paged record queries, so large historical pulls
+    (e.g. 2.3M weather rows) must go through the REST exports endpoints.
+- capability: single record read
+  operations: [getRecord]
+  reason: No MCP tool reads one record by record_id.
+- capability: dataset attachments
+  operations: [getDatasetAttachments]
+  reason: No MCP tool lists dataset attachments.
+coverage:
+  tools_named: 5
+  tools_bound: 5
+  mcp_only: 0
+  rest_operations_total: 16
+  rest_operations_with_tool: 5
+  rest_operations_without_tool: 11

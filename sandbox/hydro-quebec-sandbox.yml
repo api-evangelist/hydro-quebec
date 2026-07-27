@@ -1,0 +1,62 @@
+generated: '2026-07-27'
+method: searched
+source: >-
+  https://donnees.hydroquebec.com/api/v2/console, https://donnees.hydroquebec.com/api/v1/console,
+  and live probes of donnees.hydroquebec.com on 2026-07-27
+note: >-
+  There is no test/live key separation, no test data and no simulator — because there is nothing to
+  simulate. The API is read-only over public data and requires no credentials, so production IS the
+  sandbox. What Hydro-Québec does publish is an interactive API console per version, which is the
+  console/playground surface a developer actually uses to try the API before writing code.
+model: production-is-sandbox
+test_live_separation: false
+key_prefixes: null
+test_credentials_required: false
+consoles:
+- name: Explore API v2 console
+  url: https://donnees.hydroquebec.com/api/v2/console
+  covers: [v2.1, v2.0]
+  status: 200
+  verified: '2026-07-27'
+  interactive: true
+  note: Interactive request builder over the same OpenAPI 3.0.3 description harvested to openapi/.
+- name: Search API v1 console
+  url: https://donnees.hydroquebec.com/api/v1/console
+  covers: [v1]
+  status: 200
+  verified: '2026-07-27'
+  interactive: true
+  note: The only documentation the legacy v1 API has — no OpenAPI is published for it.
+anonymous_trial:
+  supported: true
+  no_signup: true
+  verified: '2026-07-27'
+  example_request: 'curl "https://donnees.hydroquebec.com/api/explore/v2.1/catalog/datasets?limit=1"'
+  example_result: HTTP 200, total_count 26
+  note: >-
+    Any developer can exercise the full API surface from a terminal with no account, no key and no
+    approval. This removes the usual reason for a sandbox.
+safe_exploration_values:
+  note: >-
+    Real dataset identifiers from the live catalog, useful as safe, small starting points when
+    trying the API. These are production identifiers, not fixtures.
+  small_datasets:
+  - {dataset_id: production-electricite-quebec, records: 48, title: Sources of electricity generated in Québec}
+  - {dataset_id: estimation-emissions-directes-ges, records: 48, title: Estimate of direct GHG emissions associated with electricity use in Québec}
+  - {dataset_id: importations-exportations-avec-transits, records: 48, title: Electricity imports and exports per market}
+  - {dataset_id: facteurges, records: 14, title: Direct GHG emission factors from energy sources}
+  - {dataset_id: evenements-de-pointe-offres-disponibles, records: 75, title: Peak demand events – Winter}
+  large_datasets_use_exports:
+  - {dataset_id: historique-donnees-meteo, records: 2326547}
+  - {dataset_id: calendrier-travaux-degagement-distribution-shap, records: 649019}
+  - {dataset_id: historique-consommation-secteur-activite-mun-mois, records: 637207}
+  - {dataset_id: donnees-hydrometeorologiques, records: 294317}
+alternate_host:
+  url: https://hydroquebec.opendatasoft.com/api/explore/v2.1
+  status: 200
+  verified: '2026-07-27'
+  note: Opendatasoft-native alias serving the identical catalog. Useful as a second host when testing.
+not_available:
+- No test mode or test API keys — keys are real keys tied to a real account.
+- No mock server, no recorded fixtures, no time simulation.
+- No write operations, therefore nothing destructive to guard against.

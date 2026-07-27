@@ -1,0 +1,166 @@
+generated: '2026-07-27'
+method: searched
+source: >-
+  https://help.opendatasoft.com/apis/ods-explore-v2/explore_v2.1.html,
+  openapi/hydro-quebec-open-data-explore-api-v2-1-openapi.json, and live probes of
+  donnees.hydroquebec.com on 2026-07-27
+note: >-
+  Cross-cutting request/response semantics for the Hydro-Québec open data Explore API. The API is
+  read-only — the spec states verbatim "Only the HTTP GET method is supported" — so several
+  conventions that would normally carry write semantics (idempotency keys, request bodies,
+  optimistic concurrency) do not apply and are recorded as such rather than left blank.
+http:
+  methods: [GET]
+  methods_note: All 16 operations are GET. No POST, PUT, PATCH or DELETE exists on any version.
+  media_type: application/json; charset=utf-8
+  base_url: https://donnees.hydroquebec.com/api/explore/v2.1
+  alternate_host: https://hydroquebec.opendatasoft.com/api/explore/v2.1
+  cors:
+    enabled: true
+    allow_origin: '*'
+    allow_methods: [POST, GET, OPTIONS]
+    expose_headers: [ODS-Explore-API-Deprecation, Link, X-RateLimit-Remaining, X-RateLimit-Limit,
+      X-RateLimit-Reset, X-RateLimit-dataset-Remaining, X-RateLimit-dataset-Limit, X-RateLimit-dataset-Reset]
+    max_age: 1000
+authentication:
+  required: false
+  anonymous: true
+  anonymous_evidence: >-
+    GET /api/explore/v2.1/catalog/datasets returned HTTP 200 with all 26 datasets and no
+    credentials, 2026-07-27.
+  styles:
+  - style: api-key-header
+    header: Authorization
+    format: 'Apikey <API_KEY>'
+    preferred: true
+    note: Platform recommends the header over the query parameter — headers are not stored in browser history or server logs.
+  - style: api-key-query
+    parameter: apikey
+    preferred: false
+    declared_in_spec: true
+  - style: oauth2
+    flow: authorizationCode
+    authorization_url: https://donnees.hydroquebec.com/oauth2/authorize/
+    token_url: https://donnees.hydroquebec.com/oauth2/token/
+    token_type: Bearer
+    scopes: [all]
+    declared_in_spec: false
+  detail: authentication/hydro-quebec-authentication.yml
+  scopes: scopes/hydro-quebec-scopes.yml
+idempotency:
+  supported: true
+  mechanism: http-semantics
+  idempotency_key_header: null
+  retention: null
+  note: >-
+    Every operation is safe and idempotent by construction because the API exposes only HTTP GET.
+    Any request may be retried without side effects. There is deliberately no Idempotency-Key
+    contract — there are no write operations for one to protect. Retries should be governed by the
+    rate-limit headers rather than by an idempotency key.
+  retry_guidance: >-
+    Safe to retry any 429 or 5xx. On 429, read X-RateLimit-Reset and back off until that timestamp
+    rather than retrying immediately.
+pagination:
+  style: offset
+  parameters:
+    limit: {in: query, description: number of records per page}
+    offset: {in: query, default: 0, description: index of the first record to return}
+  response_fields: [total_count, results, links]
+  capped: true
+  cap_note: >-
+    The records endpoint is subject to a limited number of returned records; the exports endpoints
+    are documented as having no limitation. For the large Hydro-Québec datasets
+    (historique-donnees-meteo 2.3M records, calendrier-travaux-degagement-distribution-shap 649k,
+    historique-consommation-secteur-activite-mun-mois 637k) use exports, not paging.
+  hypermedia: >-
+    Every response body carries a links array of rel/href pairs for navigation. Controlled by the
+    include_links parameter.
+query_language:
+  name: Opendatasoft Query Language (ODSQL)
+  docs: https://help.opendatasoft.com/apis/ods-explore-v2/explore_v2.1.html
+  note: One query language shared across all endpoints, which is why parameters behave the same everywhere.
+  clauses:
+  - {clause: select, purpose: projection, expressions and aggregations}
+  - {clause: where, purpose: filtering}
+  - {clause: group_by, purpose: aggregation buckets — available on export endpoints in v2.1}
+  - {clause: order_by, purpose: sorting}
+  functions: [length, now, year, month, day, hour, minute, second, date_format, json_format,
+    ifnull, lower, include, exclude, random, search, suggest, startswith, within_distance,
+    intersects, disjoint, within, geo_cluster]
+  arithmetic: ['+', '-', '*', '/']
+  arithmetic_note: Division by zero returns null.
+field_selection:
+  supported: true
+  parameters: [select, exclude]
+  note: >-
+    select projects fields and computed expressions; exclude removes them. include(prefix*) and
+    exclude(prefix*) accept a wildcard suffix for prefix matching.
+faceting:
+  supported: true
+  parameters: [refine, exclude, facet]
+  operations: [getDatasetsFacets, getRecordsFacets]
+  note: refine narrows to a facet value; exclude removes one. Facet values are enumerated by the facets operations.
+localization:
+  parameters: [lang, timezone]
+  languages_observed: [en, fr]
+  note: >-
+    The portal is bilingual. Responses carry content-language and vary on Accept-Language. Dataset
+    titles resolve per lang.
+export:
+  supported: true
+  unlimited: true
+  catalog_formats_operation: listExportFormats
+  dataset_formats_operation: listDatasetExportFormats
+  named_formats: [csv, parquet, gpx, dcat]
+  parameters: [limit_export, use_labels, compressed, epsg]
+  note: >-
+    The exports endpoints are the intended path for bulk retrieval and are documented as having no
+    record limit. DCAT export produces RDF/XML with DCAT-AP namespaces.
+metadata:
+  supported: true
+  parameter: include_app_metas
+  note: >-
+    Dataset metadata is exposed under metas.default (title, description, theme, modified,
+    records_count, license). There is no user-writable metadata surface — the API is read-only.
+request_tracing:
+  request_id_header: null
+  note: >-
+    No request-id or correlation-id header is returned. Responses carry server: openresty, date and
+    the rate-limit set only. Clients that need correlation must generate their own identifier.
+versioning:
+  style: uri-path
+  current: v2.1
+  detail: lifecycle/hydro-quebec-lifecycle.yml
+error_envelope:
+  format: proprietary
+  rfc9457: false
+  shape: '{"error_code": "<string>", "message": "<string>"}'
+  quota_shape: '{"errorcode": <number>, "reset_time": "<iso8601>", "limit_time_unit": "<string>", "call_limit": <number>, "error": "<string>"}'
+  detail: errors/hydro-quebec-problem-types.yml
+rate_limit_signalling:
+  headers: [X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset]
+  per_dataset_headers: [X-RateLimit-dataset-Limit, X-RateLimit-dataset-Remaining, X-RateLimit-dataset-Reset]
+  reset_format: 'YYYY-MM-DD HH:MM:SS+00:00 (not epoch seconds, not HTTP-date)'
+  reset_cadence: daily at midnight UTC
+  exceeded_status: 429
+  detail: rate-limits/hydro-quebec-rate-limits.yml
+caching:
+  cache_control: 'no-cache, no-store, max-age=0, must-revalidate'
+  etag: false
+  last_modified: false
+  vary: [Accept-Language, Cookie, Host]
+  note: >-
+    The API explicitly disables caching and returns no validators, so conditional requests are not
+    possible. Clients doing repeated pulls of slow-moving datasets should cache locally against
+    the dataset's metas.default.modified timestamp instead.
+licensing:
+  license: CC BY-NC 4.0
+  url: https://www.hydroquebec.com/documents-data/open-data/licence.html
+  obligations:
+  - Cite the source of the data and content.
+  - Indicate whether the data has been modified.
+  - Include a link to the licence.
+  - Do not suggest Hydro-Québec endorses the modification or use.
+  restrictions:
+  - Non-commercial use only.
+  warranty: none — "No warranties are given."

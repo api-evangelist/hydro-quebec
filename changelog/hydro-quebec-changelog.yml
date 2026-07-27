@@ -1,0 +1,70 @@
+generated: '2026-07-27'
+method: searched
+source: https://help.opendatasoft.com/apis/ods-explore-v2/explore_v2.1.html#section/Introduction/v2.1-Changelog
+note: >-
+  Hydro-Québec publishes no changelog of its own for the open data API. The authoritative
+  changelog is the Opendatasoft platform's v2.1 changelog, which the deprecated v2.0 responses
+  point clients at directly via a Link; rel="deprecation" header. Entries below are transcribed
+  from that page, which is undated — the platform records what changed between versions rather
+  than a dated release stream.
+scheme: uri-path major.minor
+current_version: v2.1
+dated: false
+url: https://help.opendatasoft.com/apis/ods-explore-v2/explore_v2.1.html#section/Introduction/v2.1-Changelog
+discovered_via:
+  header: Link
+  value: '<https://help.huwise.com/apis/ods-explore-v2/explore_v2.1.html#section/Introduction/v2.1-Changelog>; rel="deprecation"; type="text/html"'
+  observed_on: https://donnees.hydroquebec.com/api/explore/v2.0/catalog/datasets
+  verified: '2026-07-27'
+entries:
+- version: v2.1
+  date: null
+  status: current
+  stability: >-
+    Stable and production ready — platform states no breaking change will be introduced in the
+    future, following its versioning policy.
+  breaking:
+  - The /catalog/datasets/{dataset_id}/aggregates and /catalog/datasets/{dataset_id}/query endpoints
+    were removed; their functionality was merged into the single records endpoint.
+  - Output schemas changed for /catalog/datasets, /catalog/datasets/{dataset_id},
+    /catalog/datasets/{dataset_id}/records and /catalog/datasets/{dataset_id}/records/{record_id}.
+  - Full-text search was reworked — the search() function changed.
+  - Date functions year(), month(), day(), hour(), minute() and second() now return integers
+    instead of strings.
+  - Date aggregation keys are formatted as ISO-format dates; previously timestamps.
+  - Datetimes in GeoJSON exports are output as ISO-format strings; previously integer timestamps.
+  - CSV exports emit a Byte Order Mark by default.
+  - GPX exports use <extension> instead of <desc> by default to export attributes.
+  - The XLSX export format replaces the old XLS format.
+  - In a group_by, null values are now grouped.
+  additions:
+  - The group_by clause is available on export endpoints.
+  - Two new full-text functions — suggest() and startswith().
+  - Geometry functions renamed, with old names still available — distance() to within_distance(),
+    geometry(a,b,INTERSECTS) to intersects(), geometry(a,b,DISJOINT) to disjoint(),
+    geometry(a,b,WITHIN) to within().
+  deprecations:
+  - Grouping by geo fields is deprecated; use the geo_cluster() grouping function instead.
+- version: v2.0
+  date: null
+  status: deprecated
+  highlights:
+  - >-
+    Still served at https://donnees.hydroquebec.com/api/explore/v2.0 with the same 16 operations,
+    returning ODS-Explore-API-Deprecation on every response. No retirement date announced.
+- version: v1
+  date: null
+  status: legacy
+  highlights:
+  - >-
+    Opendatasoft Search API v1 at /api/datasets/1.0, still live and anonymous on the Hydro-Québec
+    portal with an interactive console at /api/v1/console, but with no published machine-readable
+    description.
+catalog_changes:
+  note: >-
+    Dataset-level change is tracked separately from API versioning. Each dataset exposes a
+    metas.default.modified timestamp through getDatasets and getDataset, and the DCAT export at
+    /catalog/exports/dcat carries dcterms:modified — that is the closest thing to a dated
+    changelog for the Hydro-Québec data itself.
+  catalog_size: 26
+  verified: '2026-07-27'

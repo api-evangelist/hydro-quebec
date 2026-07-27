@@ -20,7 +20,7 @@ description: Hydro-Québec is the government-owned Crown corporation that genera
   Electricity Act, 1998) is province-specific and does not bind Hydro-Québec, and Canada has
   no national equivalent to Australia's Consumer Data Right energy regime. Open market data,
   closed consumer data, no mandate.
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/groq.png
+image: https://hydroquebec.opendatasoft.com/assets/theme_image/hq-logo.png
 tags:
 - Energy
 - Canada
@@ -34,6 +34,7 @@ tags:
 - Carbon
 created: '2026-07-27'
 modified: '2026-07-27'
+enrichedAt: '2026-07-27'
 specificationVersion: '0.19'
 apis:
 - aid: hydro-quebec:hydro-quebec-open-data-explore-api-v2-1
@@ -66,6 +67,8 @@ apis:
     url: https://donnees.hydroquebec.com/pages/accueil/
   - type: Licensing
     url: https://www.hydroquebec.com/documents-data/open-data/licence.html
+  - type: Overlay
+    url: overlays/hydro-quebec-open-data-explore-api-v2-1-overlay.yaml
 - aid: hydro-quebec:hydro-quebec-open-data-explore-api-v2-0
   name: Hydro-Québec Open Data Explore API v2.0
   description: The prior major version of the Hydro-Québec open data Explore API, still served
@@ -89,6 +92,10 @@ apis:
     url: https://donnees.hydroquebec.com/api/v2/console
   - type: Licensing
     url: https://www.hydroquebec.com/documents-data/open-data/licence.html
+  - type: Overlay
+    url: overlays/hydro-quebec-open-data-explore-api-v2-0-overlay.yaml
+  - type: Deprecation
+    url: https://help.opendatasoft.com/apis/ods-explore-v2/explore_v2.1.html#section/Introduction/v2.1-Changelog
 - aid: hydro-quebec:hydro-quebec-open-data-search-api-v1
   name: Hydro-Québec Open Data Search API v1
   description: The legacy Opendatasoft Search API v1 still served on the Hydro-Québec open
@@ -111,16 +118,80 @@ apis:
   - type: Licensing
     url: https://www.hydroquebec.com/documents-data/open-data/licence.html
 common:
+- type: AgenticAccess
+  url: agentic-access/hydro-quebec-agentic-access.yml
+- type: DomainSecurity
+  url: security/hydro-quebec-domain-security.yml
+- type: Authentication
+  url: authentication/hydro-quebec-authentication.yml
 - type: Website
   url: https://www.hydroquebec.com/
 - type: Portal
   url: https://donnees.hydroquebec.com/pages/accueil/
+- type: DeveloperPortal
+  url: https://donnees.hydroquebec.com/pages/accueil/
 - type: Documentation
   url: https://www.hydroquebec.com/documents-data/open-data/
+- type: APIReference
+  url: https://donnees.hydroquebec.com/api/v2/console
+- type: GettingStarted
+  url: https://help.opendatasoft.com/apis/ods-explore-v2/explore_v2.1.html#section/Getting-Started
+- type: Support
+  url: https://www.hydroquebec.com/sefco2016/en/open-data-contact-us.html
+- type: Blog
+  url: https://news.hydroquebec.com/en/
+- type: TermsOfService
+  url: https://www.hydroquebec.com/terms-confidentiality.html
+- type: PrivacyPolicy
+  url: https://www.hydroquebec.com/documents-data/act-respecting-access/protection-personal-information/
 - type: Licensing
   url: https://www.hydroquebec.com/documents-data/open-data/licence.html
 - type: LinkedIn
   url: https://www.linkedin.com/company/hydro-quebec
+- type: Packages
+  url: packages/hydro-quebec-packages.yml
+- type: WellKnown
+  url: well-known/hydro-quebec-well-known.yml
+- type: SecurityTxt
+  url: well-known/hydro-quebec-security.txt
+- type: MCPServer
+  url: mcp/hydro-quebec-mcp.yml
+- type: ToolCrosswalk
+  url: mcp/hydro-quebec-tool-crosswalk.yml
+- type: LLMsTxt
+  url: llms/hydro-quebec-llms.txt
+- type: Conformance
+  url: conformance/hydro-quebec-conformance.yml
+- type: ErrorCatalog
+  url: errors/hydro-quebec-problem-types.yml
+- type: Lifecycle
+  url: lifecycle/hydro-quebec-lifecycle.yml
+- type: StatusPage
+  url: https://status.huwise.com/
+- type: Deprecation
+  url: https://help.opendatasoft.com/apis/ods-explore-v2/explore_v2.1.html#section/Introduction/v2.1-Changelog
+- type: ChangeLog
+  url: changelog/hydro-quebec-changelog.yml
+- type: OAuthScopes
+  url: scopes/hydro-quebec-scopes.yml
+- type: Conventions
+  url: conventions/hydro-quebec-conventions.yml
+- type: Idempotency
+  url: conventions/hydro-quebec-conventions.yml
+- type: RateLimits
+  url: rate-limits/hydro-quebec-rate-limits.yml
+- type: Sandbox
+  url: sandbox/hydro-quebec-sandbox.yml
+- type: Components
+  url: components/hydro-quebec-components.yml
+- type: DataModel
+  url: data-model/hydro-quebec-data-model.yml
+- type: VulnerabilityDisclosure
+  url: security/hydro-quebec-vulnerability-disclosure.yml
+- type: Security
+  url: https://donnees.hydroquebec.com/.well-known/security.txt
+- type: AgentSkill
+  url: skills/_index.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com

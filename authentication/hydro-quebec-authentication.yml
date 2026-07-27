@@ -1,0 +1,97 @@
+generated: '2026-07-27'
+method: searched
+source: >-
+  openapi/hydro-quebec-open-data-explore-api-v2-0-openapi.json,
+  openapi/hydro-quebec-open-data-explore-api-v2-1-openapi.json,
+  https://help.opendatasoft.com/apis/ods-explore-v2/explore_v2.1.html,
+  and live probes of donnees.hydroquebec.com on 2026-07-27
+docs: https://help.opendatasoft.com/apis/ods-explore-v2/explore_v2.1.html
+note: >-
+  Upgraded from the mechanically derived profile. The harvested specs declare only a single apiKey
+  scheme in the query string; the platform documentation and live probes show two further schemes
+  the spec omits — the same API key in an Authorization header, and a full OAuth2 authorization
+  code flow. The governing fact for consumers is that none of it is required: Hydro-Québec's
+  catalog is public and anonymous.
+summary:
+  required: false
+  anonymous_access: true
+  types: [none, apiKey, oauth2]
+  api_key_in: [query, header]
+  oauth2_flows: [authorizationCode]
+  declared_in_spec: [apiKey/query]
+  undeclared_in_spec: [apiKey/header, oauth2]
+anonymous:
+  supported: true
+  verified: '2026-07-27'
+  evidence: >-
+    GET https://donnees.hydroquebec.com/api/explore/v2.1/catalog/datasets?limit=1 returned HTTP 200
+    with total_count 26 and no credentials of any kind.
+  scope_of_access: All 26 public datasets, every one of the 16 operations, both v2.0 and v2.1.
+schemes:
+- name: apikey
+  type: apiKey
+  in: query
+  parameter: apikey
+  description: API key to make authenticated requests.
+  declared: true
+  preferred: false
+  preference_note: >-
+    Platform docs recommend the header form over the query parameter because headers are not
+    stored in browser history or server logs, minimizing exposure risk.
+  sources:
+  - openapi/hydro-quebec-open-data-explore-api-v2-0-openapi.json
+  - openapi/hydro-quebec-open-data-explore-api-v2-1-openapi.json
+- name: apikeyHeader
+  type: apiKey
+  in: header
+  parameter: Authorization
+  format: 'Apikey <API_KEY>'
+  description: >-
+    The same API key supplied in the Authorization header. Documented by the platform as good
+    practice and the recommended form.
+  declared: false
+  preferred: true
+  sources: [https://help.opendatasoft.com/apis/ods-explore-v2/explore_v2.1.html]
+- name: oauth2
+  type: oauth2
+  description: >-
+    Platform OAuth2 authorization code flow for third-party applications acting on behalf of a
+    user, compliant with RFC 6749 and using Bearer tokens per RFC 6750.
+  declared: false
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://donnees.hydroquebec.com/oauth2/authorize/
+    tokenUrl: https://donnees.hydroquebec.com/oauth2/token/
+    scopes: [all]
+    scope_count: 1
+    verified: '2026-07-27'
+  sources: [https://help.opendatasoft.com/apis/ods-explore-v2/explore_v2.1.html]
+  detail: scopes/hydro-quebec-scopes.yml
+key_management:
+  self_service: true
+  console: https://donnees.hydroquebec.com/account/
+  create_revoke: true
+  identity_model: >-
+    A key authenticates as the user who created it and carries that user's rights, so keys are
+    personal and must not be shared. Finer-grained key permissions require the platform's API key
+    Automation API.
+unauthenticated_behaviour:
+  status_on_private_catalog: 401
+  status_on_hydro_quebec: 200
+  note: >-
+    The 401 Unauthorized declared on all 16 operations applies to private Opendatasoft portals.
+    The Hydro-Québec portal is public, so anonymous requests succeed and 401 is not reachable in
+    normal use.
+discovery:
+  openid_configuration: 404
+  oauth_authorization_server: 404
+  note: >-
+    Neither RFC 8414 nor OIDC discovery metadata is published, so the OAuth2 endpoints above must
+    be configured from documentation rather than discovered.
+consumer_data:
+  customer_api: false
+  note: >-
+    There is no authentication path to an individual customer's own electricity consumption. No
+    customer-facing API, no Green Button Download My Data or Connect My Data, and no third-party
+    consent flow exist. A customer's usage is reachable only by logging into the Espace client web
+    portal as themselves.

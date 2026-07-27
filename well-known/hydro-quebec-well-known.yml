@@ -1,0 +1,61 @@
+generated: '2026-07-27'
+method: searched
+source: live probes of the Hydro-Québec open data API host and the corporate host
+note: >-
+  The open data portal (donnees.hydroquebec.com) is an Opendatasoft-hosted platform, so the
+  /.well-known/ surface it serves is the platform vendor's, not one Hydro-Québec authored.
+  It is recorded verbatim because it is what a client resolving the API host actually receives.
+  www.hydroquebec.com answers every unknown path with an HTTP 200 soft-404 HTML page, so
+  probes against that host were validated by page title and are recorded as not-present.
+hosts:
+- host: https://donnees.hydroquebec.com
+  role: api + developer portal
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    file: hydro-quebec-security.txt
+    spec: RFC 9116
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+- host: https://www.hydroquebec.com
+  role: corporate website
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    present: false
+    note: soft-404 — returns the "Erreur 404 | Hydro-Québec" HTML page, not an RFC 9116 document
+  - path: /.well-known/api-catalog
+    status: 200
+    present: false
+    note: soft-404 HTML page
+adjacent_discovery:
+- path: /api/v2/swagger.json
+  status: 200
+  host: https://donnees.hydroquebec.com
+  note: OpenAPI 3.0.3 for Explore API v2.0 (harvested to openapi/)
+- path: /api/explore/v2.1/swagger.json
+  status: 200
+  host: https://donnees.hydroquebec.com
+  note: OpenAPI 3.0.3 for Explore API v2.1 (harvested to openapi/)
+- path: /api/v1/swagger.json
+  status: 404
+  host: https://donnees.hydroquebec.com
+  note: no machine-readable description published for the legacy Search API v1
+- path: /api/explore/v2.1/catalog/exports/dcat
+  status: 200
+  host: https://donnees.hydroquebec.com
+  note: DCAT (RDF/XML) catalog export — the de facto machine-readable dataset catalog
+- path: /oauth2/authorize/
+  status: 302
+  host: https://donnees.hydroquebec.com
+  note: platform OAuth2 authorization endpoint (live, redirects to login)
+- path: /oauth2/token/
+  status: 405
+  host: https://donnees.hydroquebec.com
+  note: platform OAuth2 token endpoint (live, POST only)
