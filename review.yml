@@ -1,0 +1,273 @@
+aid: hydro-quebec
+name: Hydro-Québec
+review:
+  question: >-
+    Does Hydro-Québec publish a real, documented public API — and does any consumer
+    energy data mandate bind it?
+  answer: >-
+    Yes to a public API, but only for market and grid data. No to a consumer data API,
+    and no mandate applies.
+  date: '2026-07-27'
+  reviewer: API Evangelist
+  tier: utility-retailer
+  homeMarket: Canada
+  primaryDomain: hydroquebec.com
+
+mandate:
+  regime: none
+  status: none
+  verbatim: >-
+    No consumer energy data right applies to Hydro-Québec. Ontario made Green Button
+    mandatory for the majority of its electricity and natural gas local distribution
+    companies under section 25.35.8 of the Electricity Act, 1998 as implemented by
+    O. Reg. 633/21, with Green Button Alliance certification of Download My Data and
+    Connect My Data required by 1 November 2023. That regulation is province-specific
+    and does not reach Québec. Canada has no national equivalent to Australia's
+    Consumer Data Right energy regime, and Québec's Régie de l'énergie has imposed no
+    comparable data-sharing obligation on Hydro-Québec. The Green Button Alliance's
+    own Canadian Initiatives page states it has no information about Green Button
+    deployments in Québec.
+  verificationMethod: >-
+    Searched for any Hydro-Québec Green Button, Download My Data, Connect My Data, or
+    third-party data-sharing surface and found none. Probed developer., developers.,
+    api., docs., and data. subdomains of hydroquebec.com — all failed to resolve
+    (curl exit, no HTTP response). Probed hydroquebec.com/.well-known/openid-configuration
+    and hydroquebec.com/openapi.json — both return an HTTP 200 soft-404 HTML error page
+    ("Erreur 404 | Hydro-Québec"), not JSON, so neither is a real artifact. No CDR-style
+    register, no accreditation scheme, no consent flow exists to verify.
+  notImplementedBecause: >-
+    Nothing obliges it and nothing was built. This is the unmandated side of the
+    Canadian contrast — a provincial Crown corporation with no data-right obligation,
+    sitting beside Ontario utilities that were compelled by regulation to certify a
+    standard implementation.
+
+dataStandard:
+  consumer: no standard reference found
+  market: >-
+    No energy-domain standard. The open data API is the Opendatasoft Explore API
+    (v2.0 and v2.1), a generic open-data platform contract, with an Opendatasoft Query
+    Language (ODSQL) filter syntax and a DCAT / DCAT-AP catalog export at
+    /catalog/exports/dcat. No Green Button / ESPI, no CDR Consumer Data Standards, no
+    IEC CIM 61968/61970, no IEEE 2030.5, no OpenADR, no OCPP/OCPI reference was found
+    anywhere on the portal or the corporate site.
+
+consumerVsMarketSplit:
+  consumerDataAPI: false
+  consumerDataEvidence: >-
+    There is no documented API by which a customer or an authorized third party can
+    obtain an individual account's usage or billing data. A customer's own consumption
+    profile is reachable only by logging in to the Espace client web portal
+    (https://www.hydroquebec.com/residential/customer-space/, HTTP 200 — a customer
+    login, not a developer portal). No OAuth authorization server, no consent screen,
+    no third-party registration, no API key issuance for account data. The absence is
+    corroborated by the existence of unofficial screen-scraping clients built against
+    the customer portal rather than against any API.
+  marketDataOpen: true
+  marketDataEvidence: >-
+    Fully open and anonymous. GET
+    https://donnees.hydroquebec.com/api/explore/v2.1/catalog/datasets?limit=3 returned
+    HTTP 200 with total_count 26, with no API key, no account, and no referer. The
+    legacy v1 endpoint GET /api/datasets/1.0/search/?rows=2 also returned HTTP 200 with
+    nhits 26. Datasets include Québec electricity demand (hourly history), sources of
+    electricity generated, imports and exports per market including wheel-through
+    energy, ongoing outages and planned service interruptions, direct GHG emission
+    factors, hydrometric and hydrometeorological flows and water levels, winter peak
+    demand events, demand-response participant consumption, and vegetation control
+    planning for the transmission and distribution systems.
+  finding: >-
+    The split is total. Hydro-Québec is one of the more genuinely open publishers of
+    grid and market data in North America — machine-readable, OpenAPI-described,
+    anonymously callable — and simultaneously publishes nothing at all about an
+    individual customer. Openness here is a corporate transparency and energy-transition
+    posture, not a data-rights posture. Nothing was built for the customer because
+    nothing required it.
+
+accessGate:
+  gate: self-serve
+  whatDeveloperMustDo: >-
+    Nothing. Call https://donnees.hydroquebec.com/api/explore/v2.1/... directly. No
+    signup, no application form, no key. The published OpenAPI declares an optional
+    apiKey security scheme named "apikey" passed as a query parameter, for authenticated
+    requests only; it is not required for the public datasets. The real constraint is
+    licensing, not access: all but two datasets carry Creative Commons
+    Attribution-NonCommercial 4.0 International (CC BY-NC 4.0), which requires
+    attribution with a link to the licence and prohibits commercial use. That is a
+    licence term accepted by use, not a gate a developer must pass through.
+  gatedOverall: false
+  consumerSideGate: customer-account-required
+  consumerSideNote: >-
+    Only a customer's own data, only through the Espace client web login, with no
+    programmatic surface and no delegation to a third party.
+
+authModel:
+  scheme: >-
+    Optional API key as a query parameter (apikey), per the harvested OpenAPI
+    components.securitySchemes: {"apikey": {"type": "apiKey", "in": "query", "name":
+    "apikey"}}. Public reads require no credential at all.
+  oauth: false
+  openidConnect: false
+  mtls: false
+  accreditation: none
+  wellKnownProbed:
+  - url: https://www.hydroquebec.com/.well-known/openid-configuration
+    status: 200
+    note: >-
+      Soft 404. Returns the Hydro-Québec French HTML error page, not an OIDC discovery
+      document. Not a real endpoint.
+
+developerPortal:
+  url: https://donnees.hydroquebec.com/pages/accueil/
+  confirmed: true
+  note: >-
+    A real, public, self-serve open-data portal with an interactive API console at
+    /api/v2/console and /api/v1/console. It is a data portal rather than a classic
+    developer program — no keys, no plans, no SDKs, no changelog, no status page.
+  isCustomerLogin: false
+
+probes:
+- url: https://donnees.hydroquebec.com/
+  status: 200
+  note: Open data portal root.
+- url: https://donnees.hydroquebec.com/pages/accueil/
+  status: 200
+  note: Portal home page.
+- url: https://donnees.hydroquebec.com/explore/
+  status: 200
+  note: Dataset explorer.
+- url: https://donnees.hydroquebec.com/api/v2/console
+  status: 200
+  note: Interactive Explore API v2 console — the API reference.
+- url: https://donnees.hydroquebec.com/api/v1/console
+  status: 200
+  note: Interactive legacy Search API v1 console.
+- url: https://donnees.hydroquebec.com/api/explore/v2.1/swagger.json
+  status: 200
+  note: >-
+    Real OpenAPI 3.0.3, title "Explore API", version v2.1, 16 paths, server
+    https://donnees.hydroquebec.com/api/explore/v2.1. Parsed and saved.
+- url: https://donnees.hydroquebec.com/api/explore/v2.0/swagger.json
+  status: 200
+  note: >-
+    Real OpenAPI 3.0.3, title "Explore API v2.0", 16 paths, server
+    https://donnees.hydroquebec.com/api/explore/v2.0. Parsed and saved.
+- url: https://donnees.hydroquebec.com/api/v2/swagger.json
+  status: 200
+  note: >-
+    Byte-identical to the v2.0 document (md5 f6b8dcce7e1541970b676828c59b0170). Not
+    saved separately.
+- url: https://donnees.hydroquebec.com/api/v1/swagger.json
+  status: 404
+  note: No machine-readable contract published for the legacy v1 Search API.
+- url: https://donnees.hydroquebec.com/api/explore/v2.1/catalog/datasets?limit=3
+  status: 200
+  note: Anonymous call succeeded. total_count 26.
+- url: https://donnees.hydroquebec.com/api/datasets/1.0/search/?rows=2
+  status: 200
+  note: Anonymous call to legacy v1 succeeded. nhits 26.
+- url: https://donnees.hydroquebec.com/api/explore/v2.1/catalog/exports/dcat
+  status: 200
+  note: DCAT/RDF-XML catalog export served anonymously.
+- url: https://donnees.hydroquebec.com/api/automation/v1.0/swagger.json
+  status: 404
+  note: No Opendatasoft Automation (write) API exposed.
+- url: https://www.hydroquebec.com/documents-data/open-data/
+  status: 200
+  note: Corporate open data landing page. Three themes; no API key requirement stated.
+- url: https://www.hydroquebec.com/documents-data/open-data/licence.html
+  status: 200
+  note: Licence page. CC BY-NC 4.0, attribution required, commercial use prohibited.
+- url: https://www.hydroquebec.com/residential/customer-space/
+  status: 200
+  note: Espace client customer login. Not a developer portal.
+- url: https://www.hydroquebec.com/data/
+  status: 302
+  note: Redirects to http://www.hydroquebec.com/erreurs/impossible.html. Dead.
+- url: https://developer.hydroquebec.com/
+  status: 0
+  note: Does not resolve.
+- url: https://developers.hydroquebec.com/
+  status: 0
+  note: Does not resolve.
+- url: https://api.hydroquebec.com/
+  status: 0
+  note: Does not resolve.
+- url: https://docs.hydroquebec.com/
+  status: 0
+  note: Does not resolve.
+- url: https://data.hydroquebec.com/
+  status: 0
+  note: Does not resolve.
+- url: https://www.hydroquebec.com/openapi.json
+  status: 200
+  note: Soft 404 HTML error page, not an OpenAPI document. Not an artifact.
+- url: https://www.hydroquebec.com/.well-known/openid-configuration
+  status: 200
+  note: Soft 404 HTML error page, not an OIDC discovery document.
+- url: https://www.hilo.ca/
+  status: 200
+  note: >-
+    Hilo, the Hydro-Québec smart-home and demand-response subsidiary. Marketing site
+    only.
+- url: https://developer.hilo.ca/
+  status: 0
+  note: Does not resolve. No public Hilo developer program found.
+- url: https://api.hilo.ca/
+  status: 0
+  note: Does not resolve.
+
+artifacts:
+- path: openapi/hydro-quebec-open-data-explore-api-v2-1-openapi.json
+  sourceURL: https://donnees.hydroquebec.com/api/explore/v2.1/swagger.json
+  httpStatus: 200
+  fetchDate: '2026-07-27'
+  format: OpenAPI 3.0.3
+  parses: true
+  operations: 16 GET paths
+  note: Saved verbatim as served. Provider-published, not derived.
+- path: openapi/hydro-quebec-open-data-explore-api-v2-0-openapi.json
+  sourceURL: https://donnees.hydroquebec.com/api/explore/v2.0/swagger.json
+  httpStatus: 200
+  fetchDate: '2026-07-27'
+  format: OpenAPI 3.0.3
+  parses: true
+  operations: 16 GET paths
+  note: Saved verbatim as served. Provider-published, not derived.
+
+datasets:
+  count: 26
+  licence: CC BY-NC 4.0 on 24 of 26; 2 GHG emission-factor datasets list no licence.
+  themes:
+  - Infrastructure and grid
+  - Electricity consumption
+  - GHG emissions and the energy transition
+
+sources:
+- url: https://www.hydroquebec.com/documents-data/open-data/
+  type: Documentation
+  note: Open data programme description and portal link.
+- url: https://www.hydroquebec.com/documents-data/open-data/licence.html
+  type: Licensing
+  note: Confirms CC BY-NC 4.0 with attribution and non-commercial restriction.
+- url: https://donnees.hydroquebec.com/api/v2/console
+  type: APIReference
+  note: Interactive console for Explore API v2.
+- url: https://www.greenbuttonalliance.org/canadian-initiatives
+  type: Reference
+  note: >-
+    States the Green Button Alliance has no information about Green Button deployments
+    in Québec; the mandate is Ontario-only.
+
+findings:
+  summary: >-
+    Hydro-Québec is the clean negative case for the energy data mandate. It is a
+    provincial Crown corporation in a federation where electricity is provincial, so
+    the one real North American consumer-energy mandate — Ontario's O. Reg. 633/21
+    Green Button requirement — stops at the provincial border and never touches it.
+    No mandate, no consumer API, no standard. What it does publish is a genuinely open
+    market-data surface: three live API versions over 26 grid, generation, market,
+    emissions and hydrology datasets, two of them described by provider-published
+    OpenAPI 3.0.3 documents fetched straight from the portal, all callable anonymously
+    with zero onboarding. The only friction is a CC BY-NC 4.0 licence that bars
+    commercial use — which quietly disqualifies exactly the third-party energy-service
+    developers a consumer data right would have been designed to enable.
+  status: built
