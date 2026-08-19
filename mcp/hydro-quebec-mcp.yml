@@ -3,28 +3,26 @@ method: searched
 source: https://gateway.pipeworx.io/opendatasoft/mcp (live tools/list, HTTP 200, 2026-07-27)
 status: published
 official: false
-note: >-
-  Hydro-Québec publishes no MCP server of its own. A live, anonymously callable third-party MCP
-  server for the Opendatasoft Explore API — the exact API Hydro-Québec's open data portal serves —
-  is operated by Pipeworx and was introspected directly: POST tools/list returned HTTP 200 with 36
-  tools, five of which are Opendatasoft portal tools. Those five are recorded verbatim below with
-  the real inputSchema the server returned. Every one takes an `instance` argument, which is set to
-  donnees.hydroquebec.com to point the tool at the Hydro-Québec catalog. The remaining 31 tools on
-  that endpoint are generic Pipeworx gateway/router tools that are not specific to this API and are
-  not catalogued here.
+note: 'Hydro-Québec publishes no MCP server of its own. A live, anonymously callable third-party MCP server
+  for the Opendatasoft Explore API — the exact API Hydro-Québec''s open data portal serves — is operated
+  by Pipeworx and was introspected directly: POST tools/list returned HTTP 200 with 36 tools, five of
+  which are Opendatasoft portal tools. Those five are recorded verbatim below with the real inputSchema
+  the server returned. Every one takes an `instance` argument, which is set to donnees.hydroquebec.com
+  to point the tool at the Hydro-Québec catalog. The remaining 31 tools on that endpoint are generic Pipeworx
+  gateway/router tools that are not specific to this API and are not catalogued here.'
 server:
   name: opendatasoft
   vendor: Pipeworx
   transport: http
   url: https://gateway.pipeworx.io/opendatasoft/mcp
-  package: "@pipeworx/mcp-opendatasoft"
+  package: '@pipeworx/mcp-opendatasoft'
   package_url: https://www.npmjs.com/package/@pipeworx/mcp-opendatasoft
   source: https://github.com/pipeworx-io/mcp-opendatasoft
   license: MIT
   auth: none (anonymous tools/list verified)
   instance_argument: donnees.hydroquebec.com
 introspection:
-  method: "POST {\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"tools/list\"}"
+  method: POST {"jsonrpc":"2.0","id":1,"method":"tools/list"}
   accept: application/json, text/event-stream
   status: 200
   probed: '2026-07-27'
@@ -33,76 +31,106 @@ introspection:
 tools:
 - name: datasets
   title: Datasets
-  description: >-
-    Search datasets on any Opendatasoft portal (default public.opendatasoft.com) by keyword, with
-    optional sort and facet filters; returns dataset IDs, titles, and field summaries.
+  description: Search datasets on any Opendatasoft portal (default public.opendatasoft.com) by keyword,
+    with optional sort and facet filters; returns dataset IDs, titles, and field summaries.
   input_schema:
     type: object
     properties:
-      instance: {type: string, description: Default public.opendatasoft.com.}
-      q: {type: string}
-      rows: {type: number}
-      start: {type: number}
-      sort: {type: string}
-      facet: {type: string, description: Comma-sep facets to include.}
+      instance:
+        type: string
+        description: Default public.opendatasoft.com.
+      q:
+        type: string
+      rows:
+        type: number
+      start:
+        type: number
+      sort:
+        type: string
+      facet:
+        type: string
+        description: Comma-sep facets to include.
   read_only: true
   source_operation: openapi/hydro-quebec-open-data-explore-api-v2-1-openapi.json#getDatasets
 - name: dataset
   title: Dataset
-  description: >-
-    Fetch schema and metadata for a single Opendatasoft dataset by dataset_id; returns field
+  description: Fetch schema and metadata for a single Opendatasoft dataset by dataset_id; returns field
     definitions, record count, and dataset description from the specified portal instance.
   input_schema:
     type: object
-    required: [dataset_id]
+    required:
+    - dataset_id
     properties:
-      dataset_id: {type: string}
-      instance: {type: string}
+      dataset_id:
+        type: string
+      instance:
+        type: string
   read_only: true
   source_operation: openapi/hydro-quebec-open-data-explore-api-v2-1-openapi.json#getDataset
 - name: records
   title: Records
-  description: >-
-    Query records from an Opendatasoft dataset with optional keyword search, ODSQL
-    WHERE/SELECT/GROUP BY/ORDER BY clauses, pagination, and projection; returns matching rows as JSON.
+  description: Query records from an Opendatasoft dataset with optional keyword search, ODSQL WHERE/SELECT/GROUP
+    BY/ORDER BY clauses, pagination, and projection; returns matching rows as JSON.
   input_schema:
     type: object
-    required: [dataset_id]
+    required:
+    - dataset_id
     properties:
-      dataset_id: {type: string}
-      q: {type: string}
-      where: {type: string}
-      select: {type: string}
-      group_by: {type: string}
-      order_by: {type: string}
-      limit: {type: number}
-      offset: {type: number}
-      instance: {type: string}
+      dataset_id:
+        type: string
+      q:
+        type: string
+      where:
+        type: string
+      select:
+        type: string
+      group_by:
+        type: string
+      order_by:
+        type: string
+      limit:
+        type: number
+      offset:
+        type: number
+      instance:
+        type: string
   read_only: true
   source_operation: openapi/hydro-quebec-open-data-explore-api-v2-1-openapi.json#getRecords
 - name: facets
   title: Facets
-  description: >-
-    Retrieve distinct values and counts for a named facet field within an Opendatasoft dataset;
+  description: Retrieve distinct values and counts for a named facet field within an Opendatasoft dataset;
     useful for enumerating categories or filtering options before querying records.
   input_schema:
     type: object
-    required: [dataset_id, facet]
+    required:
+    - dataset_id
+    - facet
     properties:
-      dataset_id: {type: string}
-      facet: {type: string}
-      instance: {type: string}
+      dataset_id:
+        type: string
+      facet:
+        type: string
+      instance:
+        type: string
   read_only: true
   source_operation: openapi/hydro-quebec-open-data-explore-api-v2-1-openapi.json#getRecordsFacets
 - name: instance_info
   title: Instance Info
-  description: >-
-    Fetch catalog-level metadata for an Opendatasoft portal instance (total dataset count, themes,
-    languages); defaults to public.opendatasoft.com.
+  description: Fetch catalog-level metadata for an Opendatasoft portal instance (total dataset count,
+    themes, languages); defaults to public.opendatasoft.com.
   input_schema:
     type: object
     properties:
-      instance: {type: string}
+      instance:
+        type: string
   read_only: true
   source_operation: openapi/hydro-quebec-open-data-explore-api-v2-1-openapi.json#getDatasetsFacets
 crosswalk: mcp/hydro-quebec-tool-crosswalk.yml
+deployment:
+  mode: remote
+  endpoint: https://gateway.pipeworx.io/opendatasoft/mcp
+  verified: probed
+  probe: live
+  tools: 36
+  checked: '2026-08-12'
+  source: catalog MCP census
