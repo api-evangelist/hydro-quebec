@@ -35,7 +35,7 @@ tags:
 created: '2026-07-27'
 modified: '2026-07-27'
 enrichedAt: '2026-07-27'
-specificationVersion: '0.19'
+specificationVersion: '0.23'
 apis:
 - aid: hydro-quebec:hydro-quebec-open-data-explore-api-v2-1
   name: Hydro-Québec Open Data Explore API v2.1
