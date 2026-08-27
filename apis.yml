@@ -37,73 +37,14 @@ modified: '2026-07-27'
 enrichedAt: '2026-07-27'
 specificationVersion: '0.23'
 apis:
-- aid: hydro-quebec:hydro-quebec-open-data-explore-api-v2-1
-  name: Hydro-Québec Open Data Explore API v2.1
-  description: Read-only REST API over Hydro-Québec's 26 public open datasets — catalog search,
-    dataset metadata, record query with the Opendatasoft Query Language (ODSQL), facets, attachments,
-    and bulk exports to CSV, Parquet, GPX and DCAT. Covers Québec electricity demand and generation,
-    imports and exports, ongoing outages and planned service interruptions, direct GHG emission
-    factors, hydrometric and weather history, winter peak demand events, and vegetation control
-    planning. Verified callable anonymously with no API key (HTTP 200, 26 datasets returned,
-    2026-07-27); an optional apikey query parameter is supported for authenticated requests.
-    Data is licensed CC BY-NC 4.0 (attribution, non-commercial). Market and grid data only
-    — no individual customer consumption is exposed.
-  humanURL: https://donnees.hydroquebec.com/api/v2/console
-  baseURL: https://donnees.hydroquebec.com/api/explore/v2.1
-  tags:
-  - Open Data
-  - Electricity
-  - Grid
-  - Energy Markets
-  - Carbon
-  properties:
-  - type: OpenAPI
-    url: openapi/hydro-quebec-open-data-explore-api-v2-1-openapi.json
-  - type: Documentation
-    url: https://www.hydroquebec.com/documents-data/open-data/
-  - type: APIReference
-    url: https://donnees.hydroquebec.com/api/v2/console
-  - type: Portal
-    url: https://donnees.hydroquebec.com/pages/accueil/
-  - type: Licensing
-    url: https://www.hydroquebec.com/documents-data/open-data/licence.html
-  - type: Overlay
-    url: overlays/hydro-quebec-open-data-explore-api-v2-1-overlay.yaml
-- aid: hydro-quebec:hydro-quebec-open-data-explore-api-v2-0
-  name: Hydro-Québec Open Data Explore API v2.0
-  description: The prior major version of the Hydro-Québec open data Explore API, still served
-    alongside v2.1 at its own base path and described by its own OpenAPI 3.0.3 document (also
-    mirrored at /api/v2/swagger.json). Same 16 read-only endpoints — catalog, datasets, records,
-    facets, attachments and exports — over the same 26 public datasets. Anonymously callable,
-    optional apikey query parameter, CC BY-NC 4.0.
-  humanURL: https://donnees.hydroquebec.com/api/v2/console
-  baseURL: https://donnees.hydroquebec.com/api/explore/v2.0
-  tags:
-  - Open Data
-  - Electricity
-  - Grid
-  - Energy Markets
-  properties:
-  - type: OpenAPI
-    url: openapi/hydro-quebec-open-data-explore-api-v2-0-openapi.json
-  - type: Documentation
-    url: https://www.hydroquebec.com/documents-data/open-data/
-  - type: APIReference
-    url: https://donnees.hydroquebec.com/api/v2/console
-  - type: Licensing
-    url: https://www.hydroquebec.com/documents-data/open-data/licence.html
-  - type: Overlay
-    url: overlays/hydro-quebec-open-data-explore-api-v2-0-overlay.yaml
-  - type: Deprecation
-    url: https://help.opendatasoft.com/apis/ods-explore-v2/explore_v2.1.html#section/Introduction/v2.1-Changelog
 - aid: hydro-quebec:hydro-quebec-open-data-search-api-v1
   name: Hydro-Québec Open Data Search API v1
-  description: The legacy Opendatasoft Search API v1 still served on the Hydro-Québec open
-    data portal. Verified live and anonymous on 2026-07-27 — GET /api/datasets/1.0/search/
-    returned HTTP 200 with all 26 datasets. Documented through the portal's interactive v1
-    API console. Hydro-Québec publishes no OpenAPI or Swagger description for this version
-    (/api/v1/swagger.json returns HTTP 404), so no machine-readable contract was harvested
-    for it.
+  description: >-
+    The legacy Opendatasoft Search API v1 still served on the Hydro-Québec open data portal. Verified
+    live and anonymous on 2026-07-27 — GET /api/datasets/1.0/search/ returned HTTP 200 with all 26 datasets.
+    Documented through the portal's interactive v1 API console. Hydro-Québec publishes no OpenAPI or Swagger
+    description for this version (/api/v1/swagger.json returns HTTP 404), so no machine-readable contract
+    was harvested for it.
   humanURL: https://donnees.hydroquebec.com/api/v1/console
   baseURL: https://donnees.hydroquebec.com/api/datasets/1.0
   tags:
@@ -117,7 +58,53 @@ apis:
     url: https://www.hydroquebec.com/documents-data/open-data/
   - type: Licensing
     url: https://www.hydroquebec.com/documents-data/open-data/licence.html
+- aid: hydro-quebec:hydro-quebec-catalog-api
+  name: Hydro-Québec Catalog API
+  description: API to enumerate datasets
+  humanURL: https://donnees.hydroquebec.com/api/v2/console
+  baseURL: https://donnees.hydroquebec.com/api/explore/v2.1
+  tags:
+  - Catalog
+  properties:
+  - type: OpenAPI
+    url: openapi/hydro-quebec-catalog-api-openapi.yml
+  - type: Documentation
+    url: https://www.hydroquebec.com/documents-data/open-data/
+  - type: APIReference
+    url: https://donnees.hydroquebec.com/api/v2/console
+  - type: Portal
+    url: https://donnees.hydroquebec.com/pages/accueil/
+  - type: Licensing
+    url: https://www.hydroquebec.com/documents-data/open-data/licence.html
+  - type: Deprecation
+    url: >-
+      https://help.opendatasoft.com/apis/ods-explore-v2/explore_v2.1.html#section/Introduction/v2.1-Changelog
+- aid: hydro-quebec:hydro-quebec-dataset-api
+  name: Hydro-Québec Dataset API
+  description: API to work on records
+  humanURL: https://donnees.hydroquebec.com/api/v2/console
+  baseURL: https://donnees.hydroquebec.com/api/explore/v2.1
+  tags:
+  - Dataset
+  properties:
+  - type: OpenAPI
+    url: openapi/hydro-quebec-dataset-api-openapi.yml
+  - type: Documentation
+    url: https://www.hydroquebec.com/documents-data/open-data/
+  - type: APIReference
+    url: https://donnees.hydroquebec.com/api/v2/console
+  - type: Portal
+    url: https://donnees.hydroquebec.com/pages/accueil/
+  - type: Licensing
+    url: https://www.hydroquebec.com/documents-data/open-data/licence.html
+  - type: Deprecation
+    url: >-
+      https://help.opendatasoft.com/apis/ods-explore-v2/explore_v2.1.html#section/Introduction/v2.1-Changelog
 common:
+- type: Overlay
+  url: overlays/hydro-quebec-open-data-explore-api-v2-1-overlay.yaml
+- type: Overlay
+  url: overlays/hydro-quebec-open-data-explore-api-v2-0-overlay.yaml
 - type: AgenticAccess
   url: agentic-access/hydro-quebec-agentic-access.yml
 - type: DomainSecurity
