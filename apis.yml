@@ -20,6 +20,17 @@ description: Hydro-Québec is the government-owned Crown corporation that genera
   Electricity Act, 1998) is province-specific and does not bind Hydro-Québec, and Canada has
   no national equivalent to Australia's Consumer Data Right energy regime. Open market data,
   closed consumer data, no mandate.
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: false
+  label: Hosted service · you call their endpoint
+  confidence: medium
+  source:
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 image: https://hydroquebec.opendatasoft.com/assets/theme_image/hq-logo.png
 tags:
 - Energy
