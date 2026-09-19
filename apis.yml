@@ -112,6 +112,8 @@ apis:
   humanURL: https://donnees.hydroquebec.com/api/v2/console
   baseURL: https://donnees.hydroquebec.com/api/explore/v2.1
   tags:
+  - Datasets
+  tags_raw:
   - Dataset
   properties:
   - type: OpenAPI
