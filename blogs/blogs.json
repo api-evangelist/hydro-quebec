@@ -2,6 +2,13 @@
   "repo": "hydro-quebec",
   "feeds": [
     {
+      "source": "https://news.hydroquebec.com/en/",
+      "feed_url": "https://news.hydroquebec.com/en/",
+      "title": "",
+      "saved": 0,
+      "method": "none"
+    },
+    {
       "source": "https://www.hydroquebec.com/sefco2016/en/open-data-contact-us.html",
       "feed_url": "https://www.hydroquebec.com/sefco2016/en/open-data-contact-us.html",
       "title": "",
@@ -10,5 +17,5 @@
     }
   ],
   "post_count": 0,
-  "fetched": "2026-10-03T12:30:02Z"
+  "fetched": "2026-10-10T13:15:00Z"
 }
