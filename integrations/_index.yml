@@ -93,3 +93,51 @@
     detected: '2026-10-22'
   status: not-a-workflow
   arazzo: null
+- slug: hydro-quebec-lf-energy-standards-specifications-lfess
+  label: LF Energy Standards & Specifications (LFESS)
+  partner: lf-energy
+  partner_name: LF Energy Standards & Specifications (LFESS)
+  category: open-source energy foundation membership
+  type: register
+  channel: standard-directory
+  evidence: https://landscape.lfenergy.org/
+  source: edge
+  relationship: standard-participant
+  contract_reference:
+    register: LF Energy Standards & Specifications (LFESS) members (landscape.lfenergy.org/data/full.json)
+    standard: LF Energy
+    spec_file: null
+    role: lfess-member
+    registered_name: Hydro-Québec
+    register_id: lfess-member--steering--hydro-québec-lfess
+    matched_domain: hydroquebec.com
+    matched_by: domain+verified
+    signal_note: 'participation only: membership tier is partner_tier, never counted'
+    detected_by: sweep-lf-energy-landscape.py
+    detected: '2026-10-22'
+  status: not-a-workflow
+  arazzo: null
+- slug: hydro-quebec-lf-energy-members
+  label: LF Energy (members)
+  partner: lf-energy
+  partner_name: LF Energy (members)
+  category: open-source energy foundation membership
+  type: register
+  channel: standard-directory
+  evidence: https://landscape.lfenergy.org/
+  source: edge
+  relationship: standard-participant
+  contract_reference:
+    register: LF Energy members (landscape.lfenergy.org/data/full.json)
+    standard: LF Energy
+    spec_file: null
+    role: lf-energy-member
+    registered_name: Hydro-Québec
+    register_id: lf-energy-member--strategic--hydro-québec-member
+    matched_domain: hydroquebec.com
+    matched_by: domain+verified
+    signal_note: 'participation only: membership tier is partner_tier, never counted'
+    detected_by: sweep-lf-energy-landscape.py
+    detected: '2026-10-22'
+  status: not-a-workflow
+  arazzo: null

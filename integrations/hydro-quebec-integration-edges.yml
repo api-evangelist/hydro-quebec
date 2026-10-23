@@ -93,6 +93,54 @@ edges:
   detected_by: sweep-lf-energy-projects.py
   first_seen: '2026-10-22'
   partner_tier: 'LF Energy Member: Strategic; LFESS Member: Steering'
+- partner_name: LF Energy Standards & Specifications (LFESS)
+  partner: lf-energy
+  partner_match: register
+  type: register
+  channel: standard-directory
+  relationship: standard-participant
+  direction: partner-built
+  evidence: https://landscape.lfenergy.org/
+  category: open-source energy foundation membership
+  partner_tier: steering
+  contract_reference:
+    register: LF Energy Standards & Specifications (LFESS) members (landscape.lfenergy.org/data/full.json)
+    standard: LF Energy
+    spec_file: null
+    role: lfess-member
+    registered_name: Hydro-Québec
+    register_id: lfess-member--steering--hydro-québec-lfess
+    matched_domain: hydroquebec.com
+    matched_by: domain+verified
+    signal_note: 'participation only: membership tier is partner_tier, never counted'
+    detected_by: sweep-lf-energy-landscape.py
+    detected: '2026-10-22'
+  detected_by: sweep-lf-energy-landscape.py
+  first_seen: '2026-10-22'
+- partner_name: LF Energy (members)
+  partner: lf-energy
+  partner_match: register
+  type: register
+  channel: standard-directory
+  relationship: standard-participant
+  direction: partner-built
+  evidence: https://landscape.lfenergy.org/
+  category: open-source energy foundation membership
+  partner_tier: strategic
+  contract_reference:
+    register: LF Energy members (landscape.lfenergy.org/data/full.json)
+    standard: LF Energy
+    spec_file: null
+    role: lf-energy-member
+    registered_name: Hydro-Québec
+    register_id: lf-energy-member--strategic--hydro-québec-member
+    matched_domain: hydroquebec.com
+    matched_by: domain+verified
+    signal_note: 'participation only: membership tier is partner_tier, never counted'
+    detected_by: sweep-lf-energy-landscape.py
+    detected: '2026-10-22'
+  detected_by: sweep-lf-energy-landscape.py
+  first_seen: '2026-10-22'
 generated: '2026-10-13'
 method: searched
 checked:
@@ -102,5 +150,8 @@ checked:
 - https://landscape.lfenergy.org
 - https://lfenergy.org/projects/
 - https://raw.githubusercontent.com/lf-energy/lfenergy-landscape/1364cff4a6379fe8e87568eb5134fd6e8b4ded8e/landscape.yml
+- https://github.com/arras-energy/tsc/blob/HEAD/GOVERNANCE.md
+- https://github.com/opendsm/opendsm/blob/HEAD/MAINTAINERS.md
+- https://landscape.lfenergy.org/data/full.json
 source:
 - https://api.arcadia.com/plug/providers/public
