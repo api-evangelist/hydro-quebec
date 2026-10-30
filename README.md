@@ -1,4 +1,4 @@
-# Hydro-Québec (hydro-quebec)
+# Hydro-Québec
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -66,99 +66,134 @@
 
 Hydro-Québec is the government-owned Crown corporation that generates, transmits and distributes almost all of the electricity consumed in Québec, Canada — a vertically integrated, near-monopoly utility running one of the largest hydroelectric fleets in the world and serving roughly 4.6 million customer accounts across the province. It sits at every point of the value chain at once, as generator, transmission owner, distributor and retailer, plus a cross-border exporter into the New England and New York markets. Its API posture is a clean split. Market and grid data is genuinely open — a public Opendatasoft-powered portal at donnees.hydroquebec.com serves 26 datasets (electricity demand and generation, imports and exports, outages, GHG emission factors, hydrometric and weather data, winter peak demand events, vegetation control) through a documented, anonymously callable REST API with a machine-readable OpenAPI 3.0.3 description and a DCAT catalog export, licensed CC BY-NC 4.0. Consumer data is closed — there is no documented customer-facing API, no Green Button Download My Data or Connect My Data service, and no third-party consent flow; a customer's own usage is reachable only by logging into the Espace client web portal. Québec has no consumer energy data right. Ontario's Green Button regulation (O. Reg. 633/21 under the Electricity Act, 1998) is province-specific and does not bind Hydro-Québec, and Canada has no national equivalent to Australia's Consumer Data Right energy regime. Open market data, closed consumer data, no mandate.
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/hydro-quebec/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/hydro-quebec/refs/heads/main/apis.yml)
+**Areas:** Energy · Canada · Utilities · Electricity · Grid · Energy Markets · Renewables · Open Data · Demand Response · Carbon
 
-## Tags
+## Hydro-Québec on APIs.io
 
-- Energy
-- Canada
-- Utilities
-- Electricity
-- Grid
-- Energy Markets
-- Renewables
-- Open Data
-- Demand Response
-- Carbon
+Everything profiled for Hydro-Québec is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/hydro-quebec/](https://apis.io/providers/hydro-quebec/)** — or go straight to one of the APIs or properties below.
 
-## Timestamps
+### APIs (3)
 
-- **Created:** 2026-07-27
-- **Modified:** 2026-07-27
+- [Hydro-Québec Open Data Search API v1](https://apis.io/apis/hydro-quebec/hydro-quebec-open-data-search-api-v1/) — The legacy Opendatasoft Search API v1 still served on the Hydro-Québec open data portal. Verified live and anonymous on 2026-07-27 — GET…
+- [Hydro-Québec Catalog API](https://apis.io/apis/hydro-quebec/hydro-quebec-catalog-api/) — API to enumerate datasets
+- [Hydro-Québec Dataset API](https://apis.io/apis/hydro-quebec/hydro-quebec-dataset-api/) — API to work on records
 
-## APIs
+### Published properties
 
-### Hydro-Québec Open Data Explore API v2.1
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-Read-only REST API over Hydro-Québec's 26 public open datasets — catalog search, dataset metadata, record query with the Opendatasoft Query Language (ODSQL), facets, attachments, and bulk exports to CSV, Parquet, GPX and DCAT. Covers Québec electricity demand and generation, imports and exports, ongoing outages and planned service interruptions, direct GHG emission factors, hydrometric and weather history, winter peak demand events, and vegetation control planning. Verified callable anonymously with no API key (HTTP 200, 26 datasets returned, 2026-07-27); an optional `apikey` query parameter is supported for authenticated requests. Data is licensed CC BY-NC 4.0 (attribution, non-commercial). Market and grid data only — no individual customer consumption is exposed.
+#### MCP servers (1)
 
-- **Human URL:** [https://donnees.hydroquebec.com/api/v2/console](https://donnees.hydroquebec.com/api/v2/console)
-- **Base URL:** `https://donnees.hydroquebec.com/api/explore/v2.1`
+Model Context Protocol servers that expose the API to agents.
 
-#### Tags
+- [opendatasoft](https://apis.io/servers/hydro-quebec/opendatasoft/)
 
-- Open Data
-- Electricity
-- Grid
-- Energy Markets
-- Carbon
+#### Agentic access (1)
 
-#### Properties
+Which operations an agent can call, which act, and which need a human in the loop.
 
-- [OpenAPI](openapi/hydro-quebec-open-data-explore-api-v2-1-openapi.json) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Documentation](https://www.hydroquebec.com/documents-data/open-data/)
-- [API Reference](https://donnees.hydroquebec.com/api/v2/console)
-- [Portal](https://donnees.hydroquebec.com/pages/accueil/)
-- [Licensing](https://www.hydroquebec.com/documents-data/open-data/licence.html)
+- [Hydro Quebec Agentic Access](https://apis.io/agentic-access/hydro-quebec/hydro-quebec-agentic-access/)
 
-### Hydro-Québec Open Data Explore API v2.0
+#### Collections (2)
 
-The prior major version of the Hydro-Québec open data Explore API, still served alongside v2.1 at its own base path and described by its own OpenAPI 3.0.3 document (also mirrored at `/api/v2/swagger.json`). Same 16 read-only endpoints — catalog, datasets, records, facets, attachments and exports — over the same 26 public datasets. Anonymously callable, optional `apikey` query parameter, CC BY-NC 4.0.
+Postman and Open Collection request collections.
 
-- **Human URL:** [https://donnees.hydroquebec.com/api/v2/console](https://donnees.hydroquebec.com/api/v2/console)
-- **Base URL:** `https://donnees.hydroquebec.com/api/explore/v2.0`
+- [Explore API](https://apis.io/collections/hydro-quebec/open-hydro-quebec-open-data-explore-api-v2-0/)
+- [Explore API](https://apis.io/collections/hydro-quebec/open-hydro-quebec-open-data-explore-api-v2-1/)
 
-#### Tags
+#### Overlays (2)
 
-- Open Data
-- Electricity
-- Grid
-- Energy Markets
+OpenAPI overlays, including conversational phrasing for each operation.
 
-#### Properties
+- [Hydro Quebec Open Data Explore Api V2 0 Overlay](https://apis.io/overlays/hydro-quebec/hydro-quebec-open-data-explore-api-v2-0-overlay/)
+- [Hydro Quebec Open Data Explore Api V2 1 Overlay](https://apis.io/overlays/hydro-quebec/hydro-quebec-open-data-explore-api-v2-1-overlay/)
 
-- [OpenAPI](openapi/hydro-quebec-open-data-explore-api-v2-0-openapi.json) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Documentation](https://www.hydroquebec.com/documents-data/open-data/)
-- [API Reference](https://donnees.hydroquebec.com/api/v2/console)
-- [Licensing](https://www.hydroquebec.com/documents-data/open-data/licence.html)
+#### Security (3)
 
-### Hydro-Québec Open Data Search API v1
+Authentication, trust centre, and vulnerability disclosure.
 
-The legacy Opendatasoft Search API v1 still served on the Hydro-Québec open data portal. Verified live and anonymous on 2026-07-27 — `GET /api/datasets/1.0/search/` returned HTTP 200 with all 26 datasets. Documented through the portal's interactive v1 API console. Hydro-Québec publishes no OpenAPI or Swagger description for this version (`/api/v1/swagger.json` returns HTTP 404), so no machine-readable contract was harvested for it.
+- [Hydro Quebec Authentication](https://apis.io/security/hydro-quebec/hydro-quebec-authentication/)
+- [Hydro Quebec Domain Security](https://apis.io/security/hydro-quebec/hydro-quebec-domain-security/)
+- [Hydro Quebec Vulnerability Disclosure](https://apis.io/security/hydro-quebec/hydro-quebec-vulnerability-disclosure/)
 
-- **Human URL:** [https://donnees.hydroquebec.com/api/v1/console](https://donnees.hydroquebec.com/api/v1/console)
-- **Base URL:** `https://donnees.hydroquebec.com/api/datasets/1.0`
+#### OAuth scopes (1)
 
-#### Tags
+The permissions the API asks for.
 
-- Open Data
-- Electricity
-- Legacy
+- [Hydro Quebec Scopes](https://apis.io/scopes/hydro-quebec/hydro-quebec-scopes/)
 
-#### Properties
+#### Rate limits (1)
 
-- [API Reference](https://donnees.hydroquebec.com/api/v1/console)
-- [Documentation](https://www.hydroquebec.com/documents-data/open-data/)
-- [Licensing](https://www.hydroquebec.com/documents-data/open-data/licence.html)
+Published request limits.
 
-## Common Properties
+- [Hydro Quebec Rate Limits](https://apis.io/rate-limits/hydro-quebec/hydro-quebec-rate-limits/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
 
 - [Website](https://www.hydroquebec.com/)
-- [Portal](https://donnees.hydroquebec.com/pages/accueil/)
 - [Documentation](https://www.hydroquebec.com/documents-data/open-data/)
-- [Licensing](https://www.hydroquebec.com/documents-data/open-data/licence.html)
-- [LinkedIn](https://www.linkedin.com/company/hydro-quebec)
+- [Getting started](https://help.opendatasoft.com/apis/ods-explore-v2/explore_v2.1.html#section/Getting-Started)
+- [API reference](https://donnees.hydroquebec.com/api/v2/console)
+- [Support](https://www.hydroquebec.com/sefco2016/en/open-data-contact-us.html)
+- [Blog](https://news.hydroquebec.com/en/)
+- [Security](https://donnees.hydroquebec.com/.well-known/security.txt)
+- [Terms of service](https://www.hydroquebec.com/terms-confidentiality.html)
+- [Privacy policy](https://www.hydroquebec.com/documents-data/act-respecting-access/protection-personal-information/)
+- [Status](https://status.huwise.com/)
 
-## Maintainers
+## API Evangelist rating
 
-- **Kin Lane** — kin@apievangelist.com
+**Kin Score 51.8** — developing · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 75.0 |
+| Contract quality | 51.4 |
+| Contract governance | 4.5 |
+| Operational transparency | 65.8 |
+| Developer ergonomics | 66.1 |
+| Access clarity | 21.1 |
+
+**Agent readiness 44.3** — agent-ready (gated down from agent-native)
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | na |
+| MCP Server | verified |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | na |
+| Error Semantics | derived (partial credit) |
+| OpenAPI Examples | verified |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | na |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | paginated |
+| Operation Distinctiveness | distinct |
+
+**Regulatory alignment 45.9** — Energy & Utilities
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/hydro-quebec/](https://apis.io/providers/hydro-quebec/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Hydro-Québec: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/hydro-quebec/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
